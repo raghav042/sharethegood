@@ -11,6 +11,3 @@ void catchError() {
     return true;
   };
 }
-
-
-// this is firebase crashlytics simple I copied from google :D

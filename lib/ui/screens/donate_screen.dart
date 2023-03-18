@@ -64,8 +64,7 @@ class _DonateScreenState extends State<DonateScreen> {
           ),
           body: TabBarView(
             children: [
-              //donors(),
-              myForm(),
+              donors(),
               takers(),
             ],
           ),
@@ -74,41 +73,23 @@ class _DonateScreenState extends State<DonateScreen> {
     );
   }
 
-  Widget myForm() {
-    return Form(
-      child: Column(
-        children: [
-          Text("name"),
-          TextFormField(),
-          Text("Quantity"),
-          TextFormField()
-        ],
-      ),
+  Widget donors() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("Name of book"),
+        TextFormField(),
+        Text("writer name"),
+        TextFormField(),
+        SizedBox(
+          height: 55,
+          width: 300,
+          child: ElevatedButton(onPressed: () {}, child: Text("send data")),
+        )
+      ],
     );
   }
-
-  // Widget donors() {
-  //   return Column(
-  //     mainAxisAlignment: MainAxisAlignment.start,
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       Text("Name of book"),
-  //       TextFormField(),
-  //
-  //       Text("writer name"),
-  //       TextFormField(),
-  //
-  //
-  //       ElevatedButton(onPressed: (){senddata();}, child: Text("send data"))
-  //
-  //
-  //
-  //
-  //
-  //
-  //     ],
-  //   );
-  // }
 
   Widget takers() {
     return Column(
@@ -139,25 +120,4 @@ class _DonateScreenState extends State<DonateScreen> {
       ],
     );
   }
-
-  /// create
-  /// read
-  /// update
-  /// delete
-  //create
-  Future<void> senddata() async {
-    await FirebaseFirestore.instance.collection("donation").doc("id3").set({
-      "author name": "my name",
-      "title": "title is hc verma",
-      "quantity": 12,
-    });
-  }
 }
-
-/// you have to pick an image/video
-/// upload it on direbase storage database
-/// get the download url of that file
-/// save this downloadUrl in firestore
-///
-///
-/// update ui according to response

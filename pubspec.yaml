@@ -1,0 +1,55 @@
+name: sharethegood
+description: A new Flutter project.
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 0.0.6+6
+
+environment:
+  sdk: '>=2.19.1 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Firebase
+  firebase_core: ^2.7.0
+  firebase_auth: ^4.2.9
+  cloud_firestore: ^4.4.3
+  firebase_storage: ^11.0.14
+  firebase_crashlytics: ^3.0.15
+  firebase_messaging: ^14.2.5
+
+  http: ^0.13.5
+  image_picker: ^0.8.6+4
+  video_player: ^2.5.3
+  cached_network_image: ^3.2.3
+  shared_preferences: ^2.0.18
+  flutter_local_notifications: ^13.0.0
+
+  # UI UX
+  dynamic_color: ^1.6.2
+  google_fonts: ^4.0.3
+  cupertino_icons: ^1.0.2
+  flutter_native_splash: ^2.2.19
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.12.0
+
+# The following section is specific to Flutter packages.
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo.jpg"
+

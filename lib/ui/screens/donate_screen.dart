@@ -62,11 +62,14 @@ class _DonateScreenState extends State<DonateScreen> {
               ],
             ),
           ),
-          body: TabBarView(
-            children: [
-              donors(),
-              takers(),
-            ],
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: TabBarView(
+              children: [
+                donors(),
+                takers(),
+              ],
+            ),
           ),
         ),
       ),
@@ -78,14 +81,15 @@ class _DonateScreenState extends State<DonateScreen> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Name of book"),
-        TextFormField(),
-        Text("writer name"),
-        TextFormField(),
-        SizedBox(
-          height: 55,
-          width: 300,
-          child: ElevatedButton(onPressed: () {}, child: Text("send data")),
+        inputTile("dummy text"),
+        inputTile("author name"),
+        SizedBox(height: 20),
+        Center(
+          child: SizedBox(
+            height: 55,
+            width: 300,
+            child: ElevatedButton(onPressed: () {}, child: Text("send data")),
+          ),
         )
       ],
     );
@@ -118,6 +122,16 @@ class _DonateScreenState extends State<DonateScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget inputTile(String label) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        decoration:
+            InputDecoration(labelText: label, border: OutlineInputBorder()),
+      ),
     );
   }
 }

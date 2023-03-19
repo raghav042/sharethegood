@@ -4,24 +4,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import '../../core/dark_theme.dart';
 import '../../core/light_theme.dart';
 import 'auth_service.dart';
-/*
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
-      return MaterialApp(
-        theme: lightTheme(lightColorScheme),
-        darkTheme: darkTheme(darkColorScheme, context),
-        themeMode: ThemeMode.system,
-        home: const AuthService(),
-      );
-    });
-  }
-}
-
- */
+import '../../core/data/user_data.dart';
 
 class Application extends StatefulWidget {
   const Application({Key? key}) : super(key: key);
@@ -35,6 +18,7 @@ class _ApplicationState extends State<Application> {
   void initState() {
     super.initState();
     setupInteractedMessage();
+
   }
 
   @override
@@ -48,6 +32,8 @@ class _ApplicationState extends State<Application> {
       );
     });
   }
+
+
 
   // It is assumed that all messages contain a data field with the key 'type'
   Future<void> setupInteractedMessage() async {

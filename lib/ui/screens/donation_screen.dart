@@ -1,16 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../forms/books_form.dart';
 
-class ProductScreen extends StatefulWidget {
-  const ProductScreen({Key? key, required this.label}) : super(key: key);
-  final String label;
+class DonationScreen extends StatefulWidget {
+  const DonationScreen({Key? key}) : super(key: key);
 
   @override
-  State<ProductScreen> createState() => _ProductScreenState();
+  State<DonationScreen> createState() => _DonationScreenState();
 }
 
-class _ProductScreenState extends State<ProductScreen> {
+class _DonationScreenState extends State<DonationScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -24,12 +21,12 @@ class _ProductScreenState extends State<ProductScreen> {
                 pinned: false,
                 expandedHeight: 320,
                 forceElevated: innerBoxIsScrolled,
-                title: Text(widget.label),
+                title: const Text("Donation"),
                 flexibleSpace: FlexibleSpaceBar(
                   collapseMode: CollapseMode.parallax,
                   stretchModes: const [StretchMode.zoomBackground],
                   background: Image.asset(
-                    "assets/${widget.label}.jpg",
+                    "assets/Clothes.jpg",
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -49,21 +46,21 @@ class _ProductScreenState extends State<ProductScreen> {
                   children: const [
                     Icon(Icons.volunteer_activism),
                     SizedBox(width: 8),
-                    Text("Donors"),
+                    Text("Available"),
                   ],
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: const [
-                    Icon(Icons.family_restroom),
+                    Icon(Icons.my_library_books),
                     SizedBox(width: 8),
-                    Text("Taker"),
+                    Text("Required"),
                   ],
                 ),
               ],
             ),
           ),
-          body: TabBarView(
+          body: const TabBarView(
             children: [],
           ),
         ),

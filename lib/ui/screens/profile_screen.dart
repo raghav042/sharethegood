@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sharethegood/ui/screens/conversation_screen.dart';
 import 'package:sharethegood/ui/screens/signin_screen.dart';
+import '../widgets/profile_settings.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key, required this.snapshot}) : super(key: key);
@@ -33,158 +34,162 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: const Text("Profile"),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(
-            height: 5,
-            width: double.infinity,
-          ),
-          SizedBox(
-            height: 210,
-            width: 210,
-            child: Stack(
-              alignment: AlignmentDirectional.center,
-              children: [
-                SizedBox(
-                  height: 200,
-                  width: 200,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: imagePath != null
-                        ? Image.file(
-                            File(imagePath!),
-                            fit: BoxFit.cover,
-                            filterQuality: FilterQuality.none,
-                          )
-                        : CachedNetworkImage(
-                            imageUrl: widget.snapshot['photoUrl'],
-                            fit: BoxFit.cover,
-                            filterQuality: FilterQuality.none,
-                          ),
-                  ),
-                ),
-                isUploading
-                    ? uploadProgress != 0
-                        ? SizedBox(
-                            height: 210,
-                            width: 210,
-                            child: CircularProgressIndicator(
-                              value: uploadProgress,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(
+              height: 5,
+              width: double.infinity,
+            ),
+            SizedBox(
+              height: 210,
+              width: 210,
+              child: Stack(
+                alignment: AlignmentDirectional.center,
+                children: [
+                  SizedBox(
+                    height: 200,
+                    width: 200,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: imagePath != null
+                          ? Image.file(
+                              File(imagePath!),
+                              fit: BoxFit.cover,
+                              filterQuality: FilterQuality.none,
+                            )
+                          : CachedNetworkImage(
+                              imageUrl: widget.snapshot['photoUrl'],
+                              fit: BoxFit.cover,
+                              filterQuality: FilterQuality.none,
                             ),
-                          )
-                        : const SizedBox(
-                            height: 210,
-                            width: 210,
-                            child: CircularProgressIndicator(),
-                          )
-                    : const SizedBox(),
-                widget.snapshot['uid'] == uid
-                    ? Align(
-                        alignment: Alignment.bottomRight,
-                        child: FloatingActionButton(
-                          elevation: 0.5,
-                          onPressed: () {
-                            updateImage(context);
-                          },
-                          child: const Icon(Icons.camera),
-                        ),
-                      )
-                    : const SizedBox(),
+                    ),
+                  ),
+                  isUploading
+                      ? uploadProgress != 0
+                          ? SizedBox(
+                              height: 210,
+                              width: 210,
+                              child: CircularProgressIndicator(
+                                value: uploadProgress,
+                              ),
+                            )
+                          : const SizedBox(
+                              height: 210,
+                              width: 210,
+                              child: CircularProgressIndicator(),
+                            )
+                      : const SizedBox(),
+                  widget.snapshot['uid'] == uid
+                      ? Align(
+                          alignment: Alignment.bottomRight,
+                          child: FloatingActionButton(
+                            elevation: 0.5,
+                            onPressed: () {
+                              updateImage(context);
+                            },
+                            child: const Icon(Icons.camera),
+                          ),
+                        )
+                      : const SizedBox(),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 30, 20, 4),
+              child: Text(
+                widget.snapshot['name'],
+                style: const TextStyle(fontSize: 30),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Email :  "),
+                Text(
+                  widget.snapshot['email'],
+                  style: const TextStyle(fontSize: 16),
+                ),
               ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 30, 20, 4),
-            child: Text(
-              widget.snapshot['name'],
-              style: const TextStyle(fontSize: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Account Type :  "),
+                Text(
+                  widget.snapshot['type'],
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Email :  "),
-              Text(
-                widget.snapshot['email'],
-                style: const TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Account Type :  "),
-              Text(
-                widget.snapshot['type'],
-                style: const TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-          widget.snapshot['uid'] != uid
-              ? Padding(
-                  padding: const EdgeInsets.all(40.0),
-                  child: SizedBox(
-                    height: 55,
+            widget.snapshot['uid'] != uid
+                ? Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: SizedBox(
+                      height: 55,
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ConversationScreen(
+                                        snapshot: widget.snapshot)));
+                          },
+                          icon: const Icon(Icons.message),
+                          label: const Text("Send Message")),
+                    ),
+                  )
+                : const SizedBox(),
+            imagePath != null
+                ? Container(
+                    height: 60,
                     width: double.infinity,
-                    child: ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ConversationScreen(
-                                      snapshot: widget.snapshot)));
-                        },
-                        icon: const Icon(Icons.message),
-                        label: const Text("Send Message")),
-                  ),
-                )
-              : const SizedBox(),
-          imagePath != null
-              ? Container(
-                  height: 60,
-                  width: double.infinity,
-                  margin: const EdgeInsets.all(30),
-                  decoration: BoxDecoration(
-                    color: colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      uploadPic();
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: isUploading
-                          ? colorScheme.tertiaryContainer
-                          : colorScheme.primaryContainer,
-                      foregroundColor: isUploading
-                          ? colorScheme.onTertiaryContainer
-                          : colorScheme.onPrimaryContainer,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+                    margin: const EdgeInsets.all(30),
+                    decoration: BoxDecoration(
+                      color: colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        uploadPic();
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: isUploading
+                            ? colorScheme.tertiaryContainer
+                            : colorScheme.primaryContainer,
+                        foregroundColor: isUploading
+                            ? colorScheme.onTertiaryContainer
+                            : colorScheme.onPrimaryContainer,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            isUploading
+                                ? "Uploading"
+                                : uploadProgress != 1
+                                    ? "Upload "
+                                    : "Uploaded",
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          isUploading
+                              ? const CircularProgressIndicator()
+                              : const Icon(Icons.arrow_upward)
+                        ],
                       ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          isUploading
-                              ? "Uploading"
-                              : uploadProgress != 1
-                                  ? "Upload "
-                                  : "Uploaded",
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                        isUploading
-                            ? const CircularProgressIndicator()
-                            : const Icon(Icons.arrow_upward)
-                      ],
-                    ),
-                  ),
-                )
-              : const SizedBox(),
-        ],
+                  )
+                : const SizedBox(),
+            const SizedBox(height: 50),
+            ProfileSettings()
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -195,6 +200,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
 
   void updateImage(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -336,6 +342,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> logout() async {
     final navigator = Navigator.of(context);
     await FirebaseAuth.instance.signOut();
-    navigator.pushReplacement(MaterialPageRoute(builder: (_) => const SignInScreen()));
+    navigator.pushReplacement(
+        MaterialPageRoute(builder: (_) => const SignInScreen()));
   }
 }

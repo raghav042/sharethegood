@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sharethegood/ui/screens/conversation_screen.dart';
-import '../../functions/profile_image.dart';
+import 'package:sharethegood/ui/screens/signin_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key, required this.snapshot}) : super(key: key);
@@ -186,6 +186,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               : const SizedBox(),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          logout();
+        },
+        label: const Text("Logout"),
+        icon: const Icon(Icons.logout),
+      ),
     );
   }
 
@@ -324,5 +331,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         SnackBar(content: Text(e.message ?? "Something went wrong")),
       );
     }
+  }
+
+  Future<void> logout() async {
+    final navigator = Navigator.of(context);
+    await FirebaseAuth.instance.signOut();
+    navigator.pushReplacement(MaterialPageRoute(builder: (_) => const SignInScreen()));
   }
 }

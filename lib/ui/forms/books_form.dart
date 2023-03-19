@@ -14,24 +14,29 @@ class _BooksFormState extends State<BooksForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        InputText(
-          label: 'Book Name',
-          controller: bookName,
-        ),
-        InputText(label: "Price", controller: price),
-        SizedBox(height: 20),
-        Center(
-          child: SizedBox(
-            height: 55,
-            width: 300,
-            child: ElevatedButton(onPressed: () {}, child: Text("send data")),
+    return Scaffold(
+      appBar: AppBar(title: Text("Book Form"),),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InputText(
+            label: 'Book Name',
+            controller: bookName,
           ),
-        )
-      ],
+          InputText(label: "Price", controller: price),
+          InputText(label: "Author name", controller: price),
+          InputText(label: "Book Name", controller: price),
+          SizedBox(height: 20),
+          Center(
+            child: SizedBox(
+              height: 55,
+              width: 300,
+              child: ElevatedButton(onPressed: () {}, child: Text("send data")),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

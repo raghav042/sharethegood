@@ -9,9 +9,9 @@ class ProfileSettings extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
-          child: const Text("General"),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+          child: Text("General"),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2),
@@ -45,14 +45,14 @@ class ProfileSettings extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
-          child: const Text("General"),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+          child: Text("General"),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2),
           child: ListTile(
-            title: const Text("Dashboard"),
+            title: const Text("Donated"),
             tileColor: colorScheme.primaryContainer,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(top: Radius.circular(12.0)),
@@ -62,7 +62,7 @@ class ProfileSettings extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2),
           child: ListTile(
-            title: const Text("Dashboard"),
+            title: const Text("Received"),
             tileColor: colorScheme.primaryContainer,
             shape: const RoundedRectangleBorder(
               borderRadius:
@@ -71,14 +71,14 @@ class ProfileSettings extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
-          child: const Text("General"),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+          child: Text("General"),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2),
           child: ListTile(
-            title: const Text("Dashboard"),
+            title: const Text("Logout"),
             tileColor: colorScheme.primaryContainer,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.0)),

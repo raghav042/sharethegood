@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sharethegood/ui/forms/books_form.dart';
+import 'package:sharethegood/ui/screens/profile_screen.dart';
 import 'media_screen.dart';
-import '../widgets/sidebar.dart';
 import 'all_users_screen.dart';
 import 'donation_screen.dart';
-import '../../core/data/user_data.dart';
 import '../../core/data/map/carousel_map.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,22 +30,31 @@ class _HomeScreenState extends State<HomeScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final size = MediaQuery.of(context).size.width / 4.8;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(" Hi ${UserData.firstname}"),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: CircleAvatar(
-              backgroundImage:
-                  CachedNetworkImageProvider(UserData.userSnapshot['photoUrl']),
-            ),
-          ),
-        ],
-      ),
-      drawer: sideBar(context, UserData.userSnapshot),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            StreamBuilder<DocumentSnapshot>(
+                stream: firestore.collection('users').doc(uid).snapshots(),
+                builder: (context, snapshot) {
+                  String firstName =
+                      (snapshot.data!['name']).toString().split(" ").first;
+                  return AppBar(
+                    title: Text(" Hi $firstName"),
+                    actions: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) =>
+                                  ProfileScreen(snapshot: snapshot.data!)));
+                        },
+                        icon: CircleAvatar(
+                          backgroundImage: CachedNetworkImageProvider(
+                              snapshot.data!['photoUrl']),
+                        ),
+                      ),
+                    ],
+                  );
+                }),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -116,10 +125,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => ProductScreen(label: label)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const BooksForm()));
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -205,56 +214,56 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            // StreamBuilder<QuerySnapshot>(
-            //     stream: firestore.collection("users").snapshots(),
-            //     builder: (_, snapshot) {
-            //       return SizedBox(
-            //         height: 200,
-            //         child: ListView.builder(
-            //             scrollDirection: Axis.horizontal,
-            //             itemCount: snapshot.data!.docs.length < 5
-            //                 ? snapshot.data!.docs.length
-            //                 : 5,
-            //             itemBuilder: (_, index) {
-            //               return Column(
-            //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //                 children: [
-            //                   Padding(
-            //                     padding:
-            //                         const EdgeInsets.symmetric(horizontal: 10),
-            //                     child: SizedBox(
-            //                       height: MediaQuery.of(context).size.width / 3,
-            //                       width: MediaQuery.of(context).size.width / 3,
-            //                       child: InkWell(
-            //                         onTap: () {
-            //                           Navigator.push(
-            //                               context,
-            //                               MaterialPageRoute(
-            //                                   builder: (_) => ProfileScreen(
-            //                                       snapshot: snapshot
-            //                                           .data!.docs[index])));
-            //                         },
-            //                         child: ClipRRect(
-            //                           borderRadius: BorderRadius.circular(12.0),
-            //                           child: CachedNetworkImage(
-            //                             imageUrl: snapshot.data!.docs[index]
-            //                                 ['photoUrl'],
-            //                             fit: BoxFit.cover,
-            //                           ),
-            //                         ),
-            //                       ),
-            //                     ),
-            //                   ),
-            //                   Text(
-            //                     snapshot.data!.docs[index]['name'],
-            //                     style: TextStyle(fontSize: 16),
-            //                     overflow: TextOverflow.ellipsis,
-            //                   )
-            //                 ],
-            //               );
-            //             }),
-            //       );
-            //     }),
+            StreamBuilder<QuerySnapshot>(
+                stream: firestore.collection("users").snapshots(),
+                builder: (_, snapshot) {
+                  return SizedBox(
+                    height: 200,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data!.docs.length < 5
+                            ? snapshot.data!.docs.length
+                            : 5,
+                        itemBuilder: (_, index) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: SizedBox(
+                                  height: MediaQuery.of(context).size.width / 3,
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) => ProfileScreen(
+                                                  snapshot: snapshot
+                                                      .data!.docs[index])));
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      child: CachedNetworkImage(
+                                        imageUrl: snapshot.data!.docs[index]
+                                            ['photoUrl'],
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                snapshot.data!.docs[index]['name'],
+                                style: TextStyle(fontSize: 16),
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            ],
+                          );
+                        }),
+                  );
+                }),
           ],
         ),
       ),

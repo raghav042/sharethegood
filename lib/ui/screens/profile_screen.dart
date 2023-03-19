@@ -191,13 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          logout();
-        },
-        label: const Text("Logout"),
-        icon: const Icon(Icons.logout),
-      ),
+
     );
   }
 

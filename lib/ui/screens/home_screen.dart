@@ -256,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               Text(
                                 snapshot.data!.docs[index]['name'],
-                                style: TextStyle(fontSize: 16),
+                                style: const TextStyle(fontSize: 16),
                                 overflow: TextOverflow.ellipsis,
                               )
                             ],

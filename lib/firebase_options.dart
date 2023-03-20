@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -46,16 +49,6 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAEBGGMZpAInoTyl7XgFwE_4PMUc3JjgUE',
-    appId: '1:691730213458:web:29a2eaa763087326790d8b',
-    messagingSenderId: '691730213458',
-    projectId: 'share-the-good',
-    authDomain: 'share-the-good.firebaseapp.com',
-    storageBucket: 'share-the-good.appspot.com',
-    measurementId: 'G-ZRV1PR563L',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCGVMMQNqJDjCFTcUVdt-HO9g60F6jSxAQ',
     appId: '1:691730213458:android:3a520f277585e124790d8b',
@@ -70,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '691730213458',
     projectId: 'share-the-good',
     storageBucket: 'share-the-good.appspot.com',
+    androidClientId: '691730213458-bcgd32s0rp84jtqh94mqsvf95rb847mf.apps.googleusercontent.com',
     iosClientId: '691730213458-5vueksk1b4d18k9pflfudns7g3uvmov7.apps.googleusercontent.com',
     iosBundleId: 'com.sharethegood.sharethegood',
   );

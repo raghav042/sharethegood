@@ -7,42 +7,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:691730213458:android:a2e01ae77c4ca97a790d8b",
-        "android_client_info": {
-          "package_name": "com.mycompany.loginpage"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "691730213458-4l3ui3conod8i6f8l01mhcrlhpq0k8rd.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCGVMMQNqJDjCFTcUVdt-HO9g60F6jSxAQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "691730213458-4l3ui3conod8i6f8l01mhcrlhpq0k8rd.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "691730213458-et4ehgjo4p36lqirnpr6pm1oettogmfd.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.mycompany.loginpage"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:691730213458:android:3a520f277585e124790d8b",
         "android_client_info": {
           "package_name": "com.sharethegood.sharethegood"
@@ -50,7 +14,23 @@
       },
       "oauth_client": [
         {
-          "client_id": "691730213458-4l3ui3conod8i6f8l01mhcrlhpq0k8rd.apps.googleusercontent.com",
+          "client_id": "691730213458-bcgd32s0rp84jtqh94mqsvf95rb847mf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sharethegood.sharethegood",
+            "certificate_hash": "4b3131a04dc76ceb0091d852271ffd3e4552a370"
+          }
+        },
+        {
+          "client_id": "691730213458-h8cp2nh2j7rol4dih4j43us06kq98n4v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sharethegood.sharethegood",
+            "certificate_hash": "0c43cbfceeef890da09c75f75921ee7e255502b1"
+          }
+        },
+        {
+          "client_id": "691730213458-j6qksuumpgerth4o4hmjbr3vm6sep3ec.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -67,10 +47,10 @@
               "client_type": 3
             },
             {
-              "client_id": "691730213458-et4ehgjo4p36lqirnpr6pm1oettogmfd.apps.googleusercontent.com",
+              "client_id": "691730213458-5vueksk1b4d18k9pflfudns7g3uvmov7.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.mycompany.loginpage"
+                "bundle_id": "com.sharethegood.sharethegood"
               }
             }
           ]

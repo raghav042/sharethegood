@@ -47,6 +47,14 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                isLoading
+                    ? SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: CircularProgressIndicator(color: Colors.white),
+                      )
+                    : SizedBox(),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 25.0,
@@ -182,6 +190,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void signInWithGoogle() async {
     final navigator = Navigator.of(context);
+    setState(() {
+      isLoading = true;
+    });
     final googleUser = await GoogleSignIn().signIn();
     final googleAuth = await googleUser?.authentication;
 
@@ -209,11 +220,12 @@ class _LoginScreenState extends State<LoginScreen> {
           setState(() {
             isLoading = false;
           });
-
         });
       }
       // navigate to HomeScreen
-      navigator.pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen()));
+      navigator.pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          (route) => false);
     }
   }
 

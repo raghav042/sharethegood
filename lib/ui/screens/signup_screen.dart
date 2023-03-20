@@ -158,7 +158,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         const SizedBox(width: 20),
                         isLoading
-                            ? const CircularProgressIndicator(color: Colors.white)
+                            ? const CircularProgressIndicator(
+                                color: Colors.white)
                             : const Icon(Icons.arrow_forward)
                       ],
                     ),
@@ -250,17 +251,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "type": "",
           "joinAt": DateTime.now(),
           "photoUrl": "",
-
         }).then((value) {
           // stop loading indicator
           setState(() {
             isLoading = false;
           });
           // navigate to HomeScreen
-          navigator.pushReplacement(MaterialPageRoute(
-              builder: (context) => HomeScreen(
-
-                  )));
+          navigator.pushReplacement(
+              MaterialPageRoute(builder: (context) => HomeScreen()));
         });
       }
       //catch error

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'welcome/info_screen.dart';
+import 'package:sharethegood/ui/screens/home_screen.dart';
 import 'signin_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -258,8 +258,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           });
           // navigate to HomeScreen
           navigator.pushReplacement(MaterialPageRoute(
-              builder: (context) => InfoScreen(
-                    name: nameController.text.trim(),
+              builder: (context) => HomeScreen(
+
                   )));
         });
       }

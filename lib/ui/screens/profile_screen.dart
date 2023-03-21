@@ -6,7 +6,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sharethegood/ui/screens/conversation_screen.dart';
-import 'package:sharethegood/ui/screens/login/welcome_screen.dart';
 import '../widgets/profile_settings.dart';
 
 class ProfileScreen extends StatefulWidget {

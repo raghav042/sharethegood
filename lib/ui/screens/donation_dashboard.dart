@@ -123,7 +123,7 @@ class _DonationDashboardState extends State<DonationDashboard> {
                     label: snapshot.data?.docs[index]['label'],
                     description: snapshot.data?.docs[index]['description'],
                     number: snapshot.data?.docs[index]['number'],
-                    donate: true,
+                    donate: false,
                   );
                 });
           } else {
@@ -150,29 +150,37 @@ class InfoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        donate
-            ? CachedNetworkImage(
-                imageUrl: image!,
-                width: 100,
-                height: 100,
-                fit: BoxFit.none,
-              )
-            : const SizedBox(),
-        Column(
-          children: [
-            Text(
-              label,
-              style: const TextStyle(fontSize: 20),
-            ),
-            Text(
-              description,
-              style: const TextStyle(fontSize: 16),
-            ),
-          ],
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 25,
+        vertical: 8,
+      ),
+      child: Row(
+        children: [
+          donate
+              ? CachedNetworkImage(
+                  imageUrl: image!,
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.none,
+                )
+              : const SizedBox(),
+          Column(
+            children: [
+              Text(
+                label,
+                style: const TextStyle(fontSize: 20),
+              ),
+              Text(
+                description,
+                style: const TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+          const Expanded(child: SizedBox()),
+          Text(number)
+        ],
+      ),
     );
   }
 }

@@ -50,7 +50,7 @@ class _BooksFormState extends State<BooksForm> {
                     height: 250,
                     filterQuality: FilterQuality.low,
                   )
-                : SizedBox(),
+                : const SizedBox(),
             InputText(
               label: 'Book Name',
               controller: bookName,
@@ -70,8 +70,8 @@ class _BooksFormState extends State<BooksForm> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(isUploading ? "Uploading Data" : "send data"),
-                        SizedBox(width: 20),
-                        isUploading ? CircularProgressIndicator() : SizedBox(),
+                        const SizedBox(width: 20),
+                        isUploading ? const CircularProgressIndicator() : const SizedBox(),
                       ],
                     )),
               ),
@@ -222,7 +222,7 @@ class _BooksFormState extends State<BooksForm> {
       await FirebaseFirestore.instance
           .collection("requiredDonation")
           .doc(timeStamp.toString())
-          .update({
+          .set({
         "uid": uid,
         "complete": false,
         "product": "book",

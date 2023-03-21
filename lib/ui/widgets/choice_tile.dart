@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/donation_screen.dart';
+import '../screens/donation_dashboard.dart';
 
 class ChoiceTile extends StatelessWidget {
   const ChoiceTile({
@@ -34,7 +34,7 @@ class ChoiceTile extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const DonationScreen()));
+                  builder: (context) => const DonationDashboard()));
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

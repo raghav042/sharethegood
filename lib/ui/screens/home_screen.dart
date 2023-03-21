@@ -3,11 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sharethegood/ui/forms/books_form.dart';
+import 'package:sharethegood/ui/forms/donation_screen.dart';
 import 'package:sharethegood/ui/screens/profile_screen.dart';
 import 'media_screen.dart';
 import 'all_users_screen.dart';
-import 'donation_screen.dart';
-import '../../core/data/map/carousel_map.dart';
+import 'donation_dashboard.dart';
+import '../../core/data/carousel_list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -74,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const DonationScreen()));
+                              builder: (context) => const DonationDashboard()));
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -98,10 +99,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => ProductScreen(label: label)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const DonationScreen(donate: true)));
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -128,7 +130,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const BooksForm()));
+                              builder: (context) =>
+                                  const DonationScreen(donate: false)));
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

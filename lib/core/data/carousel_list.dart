@@ -1,4 +1,4 @@
-import '../../modal/carousel_model.dart';
+import '../modal/carousel_model.dart';
 
 const List<CarouselModel> carouselList = [
   CarouselModel(

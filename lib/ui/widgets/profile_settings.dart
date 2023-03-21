@@ -14,27 +14,30 @@ class ProfileSettings extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ListTile(
-            leading: const Icon(Icons.add),
-            title: const Text("Donate Something"),
-            onTap: () {},
-            textColor: colorScheme.onPrimaryContainer,
-            iconColor: colorScheme.onPrimaryContainer,
-            tileColor: colorScheme.primaryContainer,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
-            ),
-          ),
-          const SizedBox(height: 3),
+
           ListTile(
             leading: const Icon(Icons.volunteer_activism_outlined),
-            title: const Text("Add Requirements"),
+            title: const Text("My Donations"),
             onTap: () {},
             textColor: colorScheme.onPrimaryContainer,
             iconColor: colorScheme.onPrimaryContainer,
             tileColor: colorScheme.primaryContainer,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(0.0),
+            ),
+          ),
+
+
+          const SizedBox(height: 3),
+          ListTile(
+            leading: const Icon(Icons.add),
+            title: const Text("My 🤔 Takens"),
+            onTap: () {},
+            textColor: colorScheme.onPrimaryContainer,
+            iconColor: colorScheme.onPrimaryContainer,
+            tileColor: colorScheme.primaryContainer,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
             ),
           ),
           const SizedBox(height: 3),

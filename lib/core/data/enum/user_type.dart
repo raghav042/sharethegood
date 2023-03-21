@@ -1,4 +1,4 @@
-enum UserType {
+enum UserTyp {
   individual,
   library,
   ngo,

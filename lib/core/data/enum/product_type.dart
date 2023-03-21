@@ -1,4 +1,4 @@
-enum ProductType {
+enum ProductTyp {
   book,
   cloth,
   food,

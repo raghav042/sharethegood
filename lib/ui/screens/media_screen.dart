@@ -16,8 +16,8 @@ class _MediaScreenState extends State<MediaScreen> {
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Center(child: Text("no media found here"),)
+        children: const [
+          Center(child: Text("no media found here"),)
         ],
       ),
     );

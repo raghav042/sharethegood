@@ -1,9 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:sharethegood/ui/screens/welcome/login_screen.dart';
 import '../../core/dark_theme.dart';
 import '../../core/light_theme.dart';
+import '../screens/login/registration_screen.dart';
 import 'auth_service.dart';
 
 class Application extends StatefulWidget {
@@ -27,7 +27,7 @@ class _ApplicationState extends State<Application> {
         theme: lightTheme(lightColorScheme),
         darkTheme: darkTheme(darkColorScheme, context),
         themeMode: ThemeMode.system,
-        home: AuthService(),
+        home: const AuthService(),
       );
     });
   }

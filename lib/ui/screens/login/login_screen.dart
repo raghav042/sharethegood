@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sharethegood/ui/screens/home_screen.dart';
+import 'package:sharethegood/ui/screens/login/registration_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -56,28 +57,29 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: CircularProgressIndicator(color: Colors.white),
                       )
                     : const SizedBox(),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 25.0,
                     vertical: 25,
                   ),
                   child: Text(
-                    isLoggedIn?
-
-                    "I want to login as ${accountType ?? ""}" : "Login to continue",
+                    isLoggedIn
+                        ? "I want to login as ${accountType ?? ""}"
+                        : "Login to continue",
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontSize: 26, color: Colors.white),
                   ),
                 ),
-                // const Text(
-                //   "ShareTheGoods uses Google login because it is secure and trusted",
-                //   textAlign: TextAlign.center,
-                //   style: TextStyle(
-                //     fontSize: 16,
-                //     color: Colors.white,
-                //   ),
-                // ),
+                isLoggedIn
+                    ? const SizedBox()
+                    : const Text(
+                        "ShareTheGoods uses Google login because it is secure and trusted",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
                 isLoggedIn
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -154,49 +156,53 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       )
                     : const SizedBox(),
-
                 const SizedBox(height: 20),
                 SizedBox(
-                        height: 55,
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            isLoggedIn ? saveData() : signInWithGoogle();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                          ),
-                          child: isLoggedIn
-                              ? Text(
-                                  "Let's Go",
+                  height: 55,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: !isLoggedIn
+                        ? () {
+                            signInWithGoogle();
+                          }
+                        : accountType != null
+                            ? () {
+                                saveData();
+                              }
+                            : null,
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                    ),
+                    child: isLoggedIn
+                        ? Text(
+                            "Let's Go",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: colorScheme.primary,
+                            ),
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Image.asset(
+                                "assets/google.png",
+                                height: 55,
+                                width: 55,
+                              ),
+                              Text(
+                                "SignIn With Google",
                                 style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: colorScheme.primary,
-                                  ),
-                                )
-                              : Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Image.asset(
-                                      "assets/google.png",
-                                      height: 55,
-                                      width: 55,
-                                    ),
-                                    Text(
-                                      "SignIn With Google",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: colorScheme.primary,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 50),
-                                  ],
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: colorScheme.primary,
                                 ),
-                        ),
-                      ),
+                              ),
+                              const SizedBox(width: 50),
+                            ],
+                          ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -255,7 +261,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
     // navigate to HomeScreen
     navigator.pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
+        MaterialPageRoute(
+            builder: (_) => RegistrationScreen(accountType: accountType!)),
         (route) => false);
   }
 

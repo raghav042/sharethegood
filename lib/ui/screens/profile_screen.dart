@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sharethegood/ui/screens/conversation_screen.dart';
-import 'package:sharethegood/ui/screens/signin_screen.dart';
+import 'package:sharethegood/ui/screens/login/welcome_screen.dart';
 import '../widgets/profile_settings.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -26,6 +26,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   double uploadProgress = 0.0;
   String? imagePath;
+  late bool isMe;
+  @override
+  void initState() {
+    isMe = widget.snapshot['uid'] == uid;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +64,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ? Image.file(
                               File(imagePath!),
                               fit: BoxFit.cover,
-                              filterQuality: FilterQuality.none,
                             )
                           : CachedNetworkImage(
                               imageUrl: widget.snapshot['photoUrl'],
                               fit: BoxFit.cover,
-                              filterQuality: FilterQuality.none,
                             ),
                     ),
                   ),
@@ -82,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: CircularProgressIndicator(),
                             )
                       : const SizedBox(),
-                  widget.snapshot['uid'] == uid
+                  isMe
                       ? Align(
                           alignment: Alignment.bottomRight,
                           child: FloatingActionButton(
@@ -104,28 +108,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: const TextStyle(fontSize: 30),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Email :  "),
-                Text(
-                  widget.snapshot['email'],
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ],
+            Text(
+              "Email :  ${widget.snapshot['email']}",
+              style: const TextStyle(fontSize: 16),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Account Type :  "),
-                Text(
-                  widget.snapshot['type'],
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ],
+            Text(
+              "Account Type :  ${widget.snapshot['type']}",
+              style: const TextStyle(fontSize: 16),
             ),
-            widget.snapshot['uid'] != uid
-                ? Padding(
+            isMe
+                ? const ProfileSettings()
+                : Padding(
                     padding: const EdgeInsets.all(40.0),
                     child: SizedBox(
                       height: 55,
@@ -141,8 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           icon: const Icon(Icons.message),
                           label: const Text("Send Message")),
                     ),
-                  )
-                : const SizedBox(),
+                  ),
             imagePath != null
                 ? Container(
                     height: 60,
@@ -187,14 +179,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   )
                 : const SizedBox(),
             const SizedBox(height: 50),
-            ProfileSettings()
           ],
         ),
       ),
-
     );
   }
-
 
   void updateImage(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -333,10 +322,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Future<void> logout() async {
-    final navigator = Navigator.of(context);
-    await FirebaseAuth.instance.signOut();
-    navigator.pushReplacement(
-        MaterialPageRoute(builder: (_) => const SignInScreen()));
-  }
+
 }

@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sharethegood/ui/forms/donation_screen.dart';
+import 'package:sharethegood/ui/screens/donation/donation_screen.dart';
 import 'package:sharethegood/ui/screens/profile_screen.dart';
 import 'media_screen.dart';
-import 'all_users_screen.dart';
-import 'donation_dashboard.dart';
+import 'users/all_users_screen.dart';
+import 'donation/donation_dashboard.dart';
 import '../../core/data/carousel_list.dart';
 
 class HomeScreen extends StatefulWidget {

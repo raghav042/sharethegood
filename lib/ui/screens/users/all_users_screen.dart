@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'individual_screen.dart';
-import 'library_screen.dart';
-import 'ngo_screen.dart';
+import 'users/library_screen.dart';
+import 'users/ngo_screen.dart';
 
 class AllUsersScreen extends StatefulWidget {
   const AllUsersScreen({Key? key}) : super(key: key);

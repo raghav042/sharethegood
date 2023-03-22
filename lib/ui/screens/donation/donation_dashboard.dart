@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:sharethegood/ui/widgets/product_tile.dart';
 
 class DonationDashboard extends StatefulWidget {
   const DonationDashboard({Key? key}) : super(key: key);
@@ -89,13 +90,7 @@ class _DonationDashboardState extends State<DonationDashboard> {
                 shrinkWrap: true,
                 itemCount: snapshot.data?.docs.length,
                 itemBuilder: (_, index) {
-                  return InfoTile(
-                    image: snapshot.data?.docs[index]['image'],
-                    label: snapshot.data?.docs[index]['label'],
-                    description: snapshot.data?.docs[index]['description'],
-                    number: snapshot.data?.docs[index]['number'],
-                    donate: true,
-                  );
+                  return ProductTile(snapshot: snapshot.data!.docs[index]);
                 });
           } else {
             return const Center(child: Text("no data found"));
@@ -119,68 +114,11 @@ class _DonationDashboardState extends State<DonationDashboard> {
                 shrinkWrap: true,
                 itemCount: snapshot.data?.docs.length,
                 itemBuilder: (_, index) {
-                  return InfoTile(
-                    label: snapshot.data?.docs[index]['label'],
-                    description: snapshot.data?.docs[index]['description'],
-                    number: snapshot.data?.docs[index]['number'],
-                    donate: false,
-                  );
+                  ProductTile(snapshot: snapshot.data!.docs[index]);
                 });
           } else {
             return const Center(child: Text("no data found"));
           }
         });
-  }
-}
-
-class InfoTile extends StatelessWidget {
-  const InfoTile({
-    Key? key,
-    this.image,
-    required this.label,
-    required this.description,
-    required this.number,
-    required this.donate,
-  }) : super(key: key);
-  final String? image;
-  final String label;
-  final String description;
-  final String number;
-  final bool donate;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 25,
-        vertical: 8,
-      ),
-      child: Row(
-        children: [
-          donate
-              ? CachedNetworkImage(
-                  imageUrl: image!,
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.none,
-                )
-              : const SizedBox(),
-          Column(
-            children: [
-              Text(
-                label,
-                style: const TextStyle(fontSize: 20),
-              ),
-              Text(
-                description,
-                style: const TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-          const Expanded(child: SizedBox()),
-          Text(number)
-        ],
-      ),
-    );
   }
 }

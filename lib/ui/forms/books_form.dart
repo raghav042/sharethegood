@@ -17,6 +17,7 @@ class BooksForm extends StatefulWidget {
 }
 
 class _BooksFormState extends State<BooksForm> {
+  final uid = FirebaseAuth.instance.currentUser?.uid;
   final bookName = TextEditingController();
   final authorName = TextEditingController();
   final number = TextEditingController();
@@ -64,14 +65,16 @@ class _BooksFormState extends State<BooksForm> {
                 width: 300,
                 child: ElevatedButton(
                     onPressed: () {
-                      donate ? addDonation() : addRequirement();
+                      createDonation();
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(isUploading ? "Uploading Data" : "send data"),
                         const SizedBox(width: 20),
-                        isUploading ? const CircularProgressIndicator() : const SizedBox(),
+                        isUploading
+                            ? const CircularProgressIndicator()
+                            : const SizedBox(),
                       ],
                     )),
               ),
@@ -158,91 +161,69 @@ class _BooksFormState extends State<BooksForm> {
     });
   }
 
-  Future<void> addDonation() async {
+  Future<void> createDonation() async {
     final navigator = Navigator.of(context);
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    String? imageUrl;
+    setState(() {
+      isUploading = true;
+    });
+    if (donate) {
+      imageUrl = await uploadImageToStorage();
+    }
+    saveToFirestore(imageUrl);
+    setState(() {
+      isUploading = false;
+    });
+    navigator
+        .pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen()));
+  }
+
+  Future<String?> uploadImageToStorage() async {
     final image = File(imagePath!);
     final imageName = imagePath?.split("/").last;
     final fileRef =
         FirebaseStorage.instance.ref("users").child(uid!).child(imageName!);
-    final timeStamp = DateTime.now().millisecondsSinceEpoch;
     final metaData = SettableMetadata(contentType: "image/jpeg");
-
-    setState(() {
-      isUploading = true;
-    });
 
     try {
       // upload image to firebase storage database
       var snapshot = await fileRef.putFile(image, metaData);
-
-      if (snapshot.state == TaskState.success) {
-        var imageUrl = await fileRef.getDownloadURL();
-        // save photoUrl to firestore
-        await FirebaseFirestore.instance
-            .collection("availableDonation")
-            .doc(timeStamp.toString())
-            .set({
-          "uid": uid,
-          "complete": false,
-          "product": "book",
-          "image": imageUrl,
-          "label": bookName.text.trim(),
-          "description": authorName.text.trim(),
-          "number": number.text.trim(),
-        });
-        setState(() {
-          isUploading = false;
-        });
-      }
-
-      navigator.pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()));
+      return await snapshot.ref.getDownloadURL();
     } on FirebaseException catch (e) {
-      setState(() {
-        isUploading = false;
-      });
-      //show error in snackbar message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? "Something went wrong")),
-      );
+      showError(e);
+      return null;
     }
   }
 
-  Future<void> addRequirement() async {
-    final navigator = Navigator.of(context);
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+  Future<void> saveToFirestore(String? imageUrl) async {
     final timeStamp = DateTime.now().millisecondsSinceEpoch;
-    setState(() {
-      isUploading = true;
-    });
-
     try {
-      // save photoUrl to firestore
+      // save data to firestore
       await FirebaseFirestore.instance
-          .collection("requiredDonation")
+          .collection("donations")
           .doc(timeStamp.toString())
           .set({
         "uid": uid,
         "complete": false,
+        "donate": donate,
+        "image": imageUrl ?? "",
         "product": "book",
         "label": bookName.text.trim(),
         "description": authorName.text.trim(),
         "number": number.text.trim(),
       });
-      setState(() {
-        isUploading = false;
-      });
-      navigator.pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()));
     } on FirebaseException catch (e) {
-      setState(() {
-        isUploading = false;
-      });
-      //show error in snackbar message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? "Something went wrong")),
-      );
+      showError(e);
     }
+  }
+
+  void showError(FirebaseException e) {
+    setState(() {
+      isUploading = false;
+    });
+    //show error in snackbar message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(e.message ?? "Something went wrong")),
+    );
   }
 }

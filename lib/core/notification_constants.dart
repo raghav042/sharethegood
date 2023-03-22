@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:sharethegood/core/modal/notification_modal.dart';
-
 /// Streams are created so that app can respond to notification-related events
 /// since the plugin is initialised in the `main` function
 final StreamController<NotificationModal> didReceiveLocalNotificationStream = StreamController<NotificationModal>.broadcast();

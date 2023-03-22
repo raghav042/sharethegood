@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sharethegood/core/data/donation_list.dart';
 import 'package:sharethegood/ui/widgets/donation_tile.dart';
-import '../../core/data/app_constants.dart';
+import '../../../core/data/app_constants.dart';
 
 class DonationScreen extends StatefulWidget {
   const DonationScreen({Key? key, required this.donate}) : super(key: key);

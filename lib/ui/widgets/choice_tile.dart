@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/donation_dashboard.dart';
+import '../screens/donation/donation_dashboard.dart';
 
 class ChoiceTile extends StatelessWidget {
   const ChoiceTile({

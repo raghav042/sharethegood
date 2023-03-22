@@ -261,8 +261,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     // navigate to HomeScreen
     navigator.pushAndRemoveUntil(
-        MaterialPageRoute(
-            builder: (_) => RegistrationScreen(accountType: accountType!)),
+        MaterialPageRoute(builder: (_) =>
+
+            accountType != "Individual"?
+            RegistrationScreen(accountType: accountType!) : const HomeScreen()),
         (route) => false);
   }
 

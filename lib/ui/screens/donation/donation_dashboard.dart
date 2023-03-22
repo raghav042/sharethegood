@@ -77,7 +77,7 @@ class _DonationDashboardState extends State<DonationDashboard> {
   Widget availableDonations() {
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection("availableDonation")
+            .collection("donations").where("donate", isEqualTo: true)
             .where("complete", isEqualTo: false)
             .snapshots(),
         builder: (_, snapshot) {
@@ -101,7 +101,7 @@ class _DonationDashboardState extends State<DonationDashboard> {
   Widget requiredDonations() {
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection("requiredDonation")
+            .collection("donations").where("donate", isEqualTo: false)
             .where("complete", isEqualTo: false)
             .snapshots(),
         builder: (_, snapshot) {

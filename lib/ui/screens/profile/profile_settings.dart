@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sharethegood/ui/screens/donation/donation_history.dart';
 import 'package:sharethegood/ui/screens/login/welcome_screen.dart';
 
 class ProfileSettings extends StatelessWidget {
-  const ProfileSettings({Key? key}) : super(key: key);
+  const ProfileSettings({Key? key, required this.uid}) : super(key: key);
+  final String uid;
 
   @override
   Widget build(BuildContext context) {
@@ -14,25 +16,12 @@ class ProfileSettings extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           ListTile(
             leading: const Icon(Icons.volunteer_activism_outlined),
-            title: const Text("My Donations"),
-            onTap: () {},
-            textColor: colorScheme.onPrimaryContainer,
-            iconColor: colorScheme.onPrimaryContainer,
-            tileColor: colorScheme.primaryContainer,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0.0),
-            ),
-          ),
-
-
-          const SizedBox(height: 3),
-          ListTile(
-            leading: const Icon(Icons.add),
-            title: const Text("My 🤔 Takens"),
-            onTap: () {},
+            title: const Text("Donation History"),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_)=> DonationHistory(uid: uid)));
+            },
             textColor: colorScheme.onPrimaryContainer,
             iconColor: colorScheme.onPrimaryContainer,
             tileColor: colorScheme.primaryContainer,
@@ -40,6 +29,17 @@ class ProfileSettings extends StatelessWidget {
               borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
             ),
           ),
+          // const SizedBox(height: 3),
+          // ListTile(
+          //   leading: const Icon(Icons.add),
+          //   title: const Text("My 🤔 Takens"),
+          //   onTap: () {},
+          //   textColor: colorScheme.onPrimaryContainer,
+          //   iconColor: colorScheme.onPrimaryContainer,
+          //   tileColor: colorScheme.primaryContainer,
+          //   shape:
+          //       const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+          // ),
           const SizedBox(height: 3),
           ListTile(
             leading: const Icon(Icons.logout),

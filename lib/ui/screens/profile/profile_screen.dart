@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sharethegood/ui/screens/users/conversation_screen.dart';
-import '../widgets/profile_settings.dart';
+import 'profile_settings.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key, required this.snapshot}) : super(key: key);
@@ -116,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: const TextStyle(fontSize: 16),
             ),
             isMe
-                ? const ProfileSettings()
+                ? ProfileSettings(uid: widget.snapshot['uid'])
                 : Padding(
                     padding: const EdgeInsets.all(40.0),
                     child: SizedBox(

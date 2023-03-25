@@ -6,7 +6,7 @@ ThemeData lightTheme(ColorScheme? lightColorScheme) {
   return ThemeData.light().copyWith(
     useMaterial3: true,
     colorScheme: lightColorScheme,
-    textTheme: GoogleFonts.poppinsTextTheme(),
+    textTheme: GoogleFonts.nunitoTextTheme(),
     appBarTheme: const AppBarTheme(
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarIconBrightness: Brightness.dark,

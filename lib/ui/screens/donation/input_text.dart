@@ -23,6 +23,8 @@ class InputText extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
       child: TextFormField(
         controller: controller,
+        minLines: 1,
+        maxLines: 5,
         obscureText: obscureText ?? false,
         validator: validator,
         autovalidateMode: AutovalidateMode.onUserInteraction,

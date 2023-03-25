@@ -1,10 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
-import '../../core/dark_theme.dart';
-import '../../core/light_theme.dart';
-import '../screens/login/registration_screen.dart';
-import 'auth_service.dart';
+import 'package:sharethegood/services/auth_service.dart';
+import 'core/theme/dark_theme.dart';
+import 'core/theme/light_theme.dart';
 
 class Application extends StatefulWidget {
   const Application({Key? key}) : super(key: key);

@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'ui/widgets/app.dart';
-import 'functions/firebase_crashlytics.dart';
-import 'functions/firebase_messaging.dart';
-import 'functions/system_style.dart';
-import 'functions/initialize_firebase.dart';
+import 'app.dart';
+import 'services/firebase_crashlytics.dart';
+import 'services/firebase_messaging.dart';
+import 'services/system_style.dart';
+import 'services/initialize_firebase.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

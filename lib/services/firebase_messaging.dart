@@ -7,7 +7,8 @@ import 'local_notification.dart';
 Future<void> initializeFcm() async {
   //Request permission to receive messages
   // [https://firebase.google.com/docs/cloud-messaging/flutter/receive#request_permission_to_receive_messages_apple_and_web]
-  final settings = await FirebaseMessaging.instance.requestPermission(
+
+  NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
     alert: true,
     announcement: false,
     badge: true,

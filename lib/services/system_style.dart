@@ -16,8 +16,8 @@ void setUIStyle() {
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent,
 
-      systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark
+      // systemNavigationBarIconBrightness: Brightness.light,
+      // statusBarIconBrightness: Brightness.light
     ),
   );
 }

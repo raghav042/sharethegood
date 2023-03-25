@@ -7,7 +7,7 @@ ThemeData darkTheme(ColorScheme? darkColorScheme, BuildContext context) {
     useMaterial3: true,
     colorScheme: darkColorScheme,
     scaffoldBackgroundColor: darkColorScheme?.surface,
-    textTheme: GoogleFonts.poppinsTextTheme(ThemeData.dark().textTheme),
+    textTheme: GoogleFonts.nunitoTextTheme(ThemeData.dark().textTheme),
     appBarTheme: const AppBarTheme(
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarIconBrightness: Brightness.light,

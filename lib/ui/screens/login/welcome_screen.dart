@@ -18,7 +18,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/donations/poor3.jpg"),
+          image: AssetImage("assets/donations/poor2.jpg"),
           fit: BoxFit.cover,
           filterQuality: FilterQuality.none,
         ),
@@ -91,7 +91,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => LoginScreen()));
+                            MaterialPageRoute(builder: (_) => const LoginScreen()));
                       },
                       child: Text(
                         "Continue",

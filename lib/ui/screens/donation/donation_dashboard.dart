@@ -1,7 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sharethegood/ui/widgets/product_tile.dart';
+import 'package:sharethegood/ui/screens/donation/donation_tile.dart';
 
 class DonationDashboard extends StatefulWidget {
   const DonationDashboard({Key? key}) : super(key: key);
@@ -29,7 +28,7 @@ class _DonationDashboardState extends State<DonationDashboard> {
                   collapseMode: CollapseMode.parallax,
                   stretchModes: const [StretchMode.zoomBackground],
                   background: Image.asset(
-                    "assets/Clothes.jpg",
+                    "assets/donate.jpg",
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -65,8 +64,8 @@ class _DonationDashboardState extends State<DonationDashboard> {
           ),
           body: TabBarView(
             children: [
-              availableDonations(),
-              requiredDonations(),
+              donationList(true),
+              donationList(false),
             ],
           ),
         ),
@@ -74,10 +73,11 @@ class _DonationDashboardState extends State<DonationDashboard> {
     );
   }
 
-  Widget availableDonations() {
+  Widget donationList(bool available) {
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection("donations").where("donate", isEqualTo: true)
+            .collection("donations")
+            .where("donate", isEqualTo: available)
             .where("complete", isEqualTo: false)
             .snapshots(),
         builder: (_, snapshot) {
@@ -90,31 +90,7 @@ class _DonationDashboardState extends State<DonationDashboard> {
                 shrinkWrap: true,
                 itemCount: snapshot.data?.docs.length,
                 itemBuilder: (_, index) {
-                  return ProductTile(snapshot: snapshot.data!.docs[index]);
-                });
-          } else {
-            return const Center(child: Text("no data found"));
-          }
-        });
-  }
-
-  Widget requiredDonations() {
-    return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection("donations").where("donate", isEqualTo: false)
-            .where("complete", isEqualTo: false)
-            .snapshots(),
-        builder: (_, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const Center(child: Text("An error occurred"));
-          } else if (snapshot.data != null) {
-            return ListView.builder(
-                shrinkWrap: true,
-                itemCount: snapshot.data?.docs.length,
-                itemBuilder: (_, index) {
-                  ProductTile(snapshot: snapshot.data!.docs[index]);
+                  return DonationTile(snapshot: snapshot.data!.docs[index]);
                 });
           } else {
             return const Center(child: Text("no data found"));

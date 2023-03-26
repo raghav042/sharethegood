@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'donation_details.dart';
 
 class DonationTile extends StatelessWidget {
   const DonationTile({Key? key, required this.snapshot}) : super(key: key);
@@ -74,7 +75,9 @@ class DonationTile extends StatelessWidget {
               SizedBox(
                 width: 100,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=> DonationDetails(snapshot: snapshot)));
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colorScheme.primary,
                     foregroundColor: colorScheme.onPrimary,

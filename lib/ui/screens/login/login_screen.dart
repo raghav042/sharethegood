@@ -216,25 +216,29 @@ class _LoginScreenState extends State<LoginScreen> {
       isLoading = true;
     });
     final navigator = Navigator.of(context);
-    final googleUser = await GoogleSignIn().signIn();
-    final googleAuth = await googleUser?.authentication;
+    try {
+      final googleUser = await GoogleSignIn().signIn();
+      final googleAuth = await googleUser?.authentication;
 
-    final authCredential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-    final userCredential =
-        await FirebaseAuth.instance.signInWithCredential(authCredential);
-    user = userCredential.user;
-    setState(() {
-      isLoading = false;
-      isLoggedIn = true;
-    });
+      final authCredential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(authCredential);
+      user = userCredential.user;
+      setState(() {
+        isLoading = false;
+        isLoggedIn = true;
+      });
 
-    if (!userCredential.additionalUserInfo!.isNewUser) {
-      navigator.pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-          (route) => false);
+      if (!userCredential.additionalUserInfo!.isNewUser) {
+        navigator.pushAndRemoveUntil(
+            MaterialPageRoute(builder: (_) => const HomeScreen()),
+            (route) => false);
+      }
+    } on FirebaseAuthException catch (e) {
+      showError(e);
     }
   }
 
@@ -244,28 +248,42 @@ class _LoginScreenState extends State<LoginScreen> {
       isLoading = true;
     });
 
-    //save user data to firestore
-    await FirebaseFirestore.instance.collection("users").doc(user?.uid).set({
-      "uid": user?.uid,
-      "name": user?.displayName,
-      "email": user?.email,
-      "type": accountType,
-      "joinAt": DateTime.now(),
-      "photoUrl": user?.photoURL,
-    }).then((value) {
-      // stop loading indicator
-      setState(() {
-        isLoading = false;
+    try {
+      //save user data to firestore
+      await FirebaseFirestore.instance.collection("users").doc(user?.uid).set({
+        "uid": user?.uid,
+        "name": user?.displayName,
+        "email": user?.email,
+        "type": accountType,
+        "joinAt": DateTime.now(),
+        "photoUrl": user?.photoURL,
+      }).then((value) {
+        // stop loading indicator
+        setState(() {
+          isLoading = false;
+        });
       });
+
+      // navigate to HomeScreen
+      navigator.pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (_) => accountType != "Individual"
+                  ? RegistrationScreen(accountType: accountType!)
+                  : const HomeScreen()),
+          (route) => false);
+    } on FirebaseException catch (e) {
+      showError(e);
+    }
+  }
+
+  void showError(FirebaseException e) {
+    setState(() {
+      isLoading = false;
     });
-
-    // navigate to HomeScreen
-    navigator.pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) =>
-
-            accountType != "Individual"?
-            RegistrationScreen(accountType: accountType!) : const HomeScreen()),
-        (route) => false);
+    //show error in snackbar message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(e.message ?? "Something went wrong")),
+    );
   }
 
   ButtonStyle buttonStyle(ColorScheme colorScheme, bool isSelected) {

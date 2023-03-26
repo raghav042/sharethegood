@@ -8,7 +8,7 @@ import 'services/initialize_firebase.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeFirebase();
-  await initializeFcm();
+  //await initializeFcm();
   catchError();
   setUIStyle();
   runApp(const Application());

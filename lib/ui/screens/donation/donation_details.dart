@@ -36,13 +36,15 @@ class _DonationDetailsState extends State<DonationDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: CachedNetworkImage(
-                imageUrl: widget.snapshot['image'],
-                filterQuality: FilterQuality.low,
-              ),
-            ),
+            widget.snapshot['donate']
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: CachedNetworkImage(
+                      imageUrl: widget.snapshot['image'],
+                      filterQuality: FilterQuality.low,
+                    ),
+                  )
+                : const SizedBox(),
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(16.0),

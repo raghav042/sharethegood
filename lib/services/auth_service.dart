@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sharethegood/ui/screens/login/welcome_screen.dart';
-import '../ui/screens/home_screen.dart';
+import 'package:sharethegood/ui/login/welcome_screen.dart';
+import '../ui/home_screen.dart';
 
 class AuthService extends StatelessWidget {
   const AuthService({Key? key}) : super(key: key);

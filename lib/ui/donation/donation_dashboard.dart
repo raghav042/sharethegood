@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sharethegood/ui/screens/donation/donation_tile.dart';
+import 'package:sharethegood/ui/donation/donation_tile.dart';
 
 class DonationDashboard extends StatefulWidget {
   const DonationDashboard({Key? key}) : super(key: key);

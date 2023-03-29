@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sharethegood/ui/screens/profile/profile_screen.dart';
+import 'package:sharethegood/ui/profile/profile_screen.dart';
 
 class LibraryScreen extends StatelessWidget {
    LibraryScreen({Key? key}) : super(key: key);

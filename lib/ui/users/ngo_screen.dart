@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sharethegood/ui/screens/profile/profile_screen.dart';
+import 'package:sharethegood/ui/profile/profile_screen.dart';
 
 class NgoScreen extends StatelessWidget {
   NgoScreen({Key? key}) : super(key: key);

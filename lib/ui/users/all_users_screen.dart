@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sharethegood/ui/screens/users/library_screen.dart';
-import 'package:sharethegood/ui/screens/users/ngo_screen.dart';
+import 'package:sharethegood/ui/users/library_screen.dart';
+import 'package:sharethegood/ui/users/ngo_screen.dart';
 import 'individual_screen.dart';
 
 class AllUsersScreen extends StatefulWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sharethegood/ui/screens/donation/donation_form.dart';
+import 'package:sharethegood/ui/donation/donation_form.dart';
 
 class DonationScreen extends StatefulWidget {
   const DonationScreen({Key? key, required this.donate}) : super(key: key);

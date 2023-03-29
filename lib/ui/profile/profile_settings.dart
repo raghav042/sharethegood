@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sharethegood/ui/screens/donation/donation_history.dart';
-import 'package:sharethegood/ui/screens/login/welcome_screen.dart';
+import 'package:sharethegood/ui/donation/donation_history.dart';
+import 'package:sharethegood/ui/login/welcome_screen.dart';
 
 class ProfileSettings extends StatelessWidget {
   const ProfileSettings({Key? key, required this.uid}) : super(key: key);

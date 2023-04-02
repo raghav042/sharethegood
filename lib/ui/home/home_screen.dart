@@ -1,11 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sharethegood/ui/donation/donation_screen.dart';
 import 'package:sharethegood/ui/home/user_appbar.dart';
-import 'package:sharethegood/ui/profile/profile_screen.dart';
-import '../media_screen.dart';
 import '../users/all_users_screen.dart';
 import '../donation/donation_dashboard.dart';
 import 'top_donors.dart';
@@ -156,5 +153,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
 }

@@ -146,10 +146,12 @@ class _DonationDetailsState extends State<DonationDetails> {
               child: FloatingActionButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              ConversationScreen(snapshot: userSnapshot!)));
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          ConversationScreen(snapshot: userSnapshot!),
+                    ),
+                  );
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -167,8 +169,10 @@ class _DonationDetailsState extends State<DonationDetails> {
   }
 
   void getUserData() async {
-    final snapshot =
-        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.snapshot['uid'])
+        .get();
     setState(() {
       userSnapshot = snapshot;
     });

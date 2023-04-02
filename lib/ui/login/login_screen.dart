@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sharethegood/ui/home_screen.dart';
+import 'package:sharethegood/ui/home/home_screen.dart';
 import 'package:sharethegood/ui/login/registration_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -224,8 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
-      final userCredential =
-          await FirebaseAuth.instance.signInWithCredential(authCredential);
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(authCredential);
       user = userCredential.user;
       setState(() {
         isLoading = false;

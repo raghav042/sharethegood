@@ -14,19 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "691730213458-bcgd32s0rp84jtqh94mqsvf95rb847mf.apps.googleusercontent.com",
+          "client_id": "691730213458-7rdf8j3ng03hgfo8vqr7f9kg8l8rub1c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sharethegood.sharethegood",
+            "certificate_hash": "0c98340f284b45596b612abd994583351b325dcd"
+          }
+        },
+        {
+          "client_id": "691730213458-grn5p3cmb46ehu9qaruotgmenfpdsd8u.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.sharethegood.sharethegood",
             "certificate_hash": "4b3131a04dc76ceb0091d852271ffd3e4552a370"
-          }
-        },
-        {
-          "client_id": "691730213458-h8cp2nh2j7rol4dih4j43us06kq98n4v.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.sharethegood.sharethegood",
-            "certificate_hash": "0c43cbfceeef890da09c75f75921ee7e255502b1"
           }
         },
         {

@@ -75,7 +75,11 @@ class DonationTile extends StatelessWidget {
                 width: 100,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_)=> DonationDetails(snapshot: snapshot)));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                DonationDetails(snapshot: snapshot)));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colorScheme.primary,

@@ -13,9 +13,9 @@ class _DonationScreenState extends State<DonationScreen> {
   static const List<String> labels = [
     "books",
     "clothes",
-    "food",
-    "volunteer",
-    "utilities",
+    // "food",
+    // "volunteer",
+    // "utilities",
   ];
 
   @override
@@ -24,7 +24,7 @@ class _DonationScreenState extends State<DonationScreen> {
     final tileWidth = MediaQuery.of(context).size.width / 3 - 15;
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.donate ? "Donate" : "I want"),
+        title: Text(widget.donate ? "Donate" : "We want"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),

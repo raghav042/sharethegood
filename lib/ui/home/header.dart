@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sharethegood/ui/donation/donation_dashboard.dart';
+import 'package:sharethegood/ui/donation/donation_tab.dart';
 import 'package:sharethegood/ui/donation/donation_screen.dart';
 import 'package:sharethegood/ui/profile/profile_screen.dart';
 
@@ -51,7 +51,7 @@ class Header extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              DonationDashboard(userSnapshot: snapshot)));
+                              DonationTab(userSnapshot: snapshot)));
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

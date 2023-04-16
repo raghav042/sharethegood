@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sharethegood/ui/home/dashboard_tile.dart';
+import 'package:sharethegood/ui/home/dashboard_row.dart';
 import 'package:sharethegood/ui/home/user_header.dart';
 import '../users/all_users_screen.dart';
 import 'top_donors.dart';
@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             const UserHeader(),
             const TopMedia(),
-            const DashboardTile(),
+            const DashboardRow(),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: Row(

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:sharethegood/ui/donation/donation_tile.dart';
 
 class DonationList extends StatelessWidget {
-  const DonationList(
-      {Key? key, required this.userType, required this.available})
-      : super(key: key);
+  const DonationList({
+    Key? key,
+    required this.userType,
+    required this.available,
+  }) : super(key: key);
   final String userType;
   final bool available;
 
@@ -19,8 +21,8 @@ class DonationList extends StatelessWidget {
 
     final otherStream = FirebaseFirestore.instance
         .collection("donations")
-        .where("donate", isEqualTo: available)
         .where("product", isEqualTo: userType == "NGO" ? "clothes" : "books")
+        .where("donate", isEqualTo: available)
         .where("complete", isEqualTo: false)
         .snapshots();
 

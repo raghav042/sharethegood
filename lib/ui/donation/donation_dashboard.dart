@@ -1,135 +1,117 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sharethegood/ui/donation/donation_list.dart';
+import 'package:sharethegood/core/color_constant.dart';
+import 'package:sharethegood/ui/donation/dashboard_tile.dart';
 
 class DonationDashboard extends StatelessWidget {
-  const DonationDashboard({Key? key, required this.userSnapshot})
-      : super(key: key);
-  final DocumentSnapshot userSnapshot;
+  const DonationDashboard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: userSnapshot['type'] == "Individual" ? 2 : 1,
-      child: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return <Widget>[
-            SliverOverlapAbsorber(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              sliver: SliverAppBar(
-                pinned: false,
-                expandedHeight: 320,
-                forceElevated: innerBoxIsScrolled,
-                title: const Text("Donation"),
-                flexibleSpace: FlexibleSpaceBar(
-                  collapseMode: CollapseMode.parallax,
-                  stretchModes: const [StretchMode.zoomBackground],
-                  background: Image.asset(
-                    "assets/donate.jpg",
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-          ];
-        },
-        body: Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 45,
-            automaticallyImplyLeading: false,
-            flexibleSpace: userSnapshot['type'] == "Individual"
-                ? TabBar(
-                    labelPadding: const EdgeInsets.fromLTRB(12, 25, 12, 12),
-                    tabs: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(Icons.volunteer_activism),
-                          SizedBox(width: 8),
-                          Text("Available"),
-                        ],
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(Icons.my_library_books),
-                          SizedBox(width: 8),
-                          Text("Required"),
-                        ],
-                      ),
-                    ],
-                  )
-                : const SizedBox(),
-          ),
-          body: userSnapshot['type'] == "Individual"
-              ? Column(
-                  children: [
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => DonationList(
-                                  userType: userSnapshot['type'],
-                                  available: true,
-                                ),
-                              ));
-                        },
-                        child: const Text("Books")),
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => DonationList(
-                                  userType: userSnapshot['type'],
-                                  available: true,
-                                ),
-                              ));
-                        },
-                        child: const Text("Clothes")),
-                  ],
-                )
-              : TabBarView(
-                  children: [
-                    DonationList(
-                      userType: userSnapshot['type'],
-                      available: true,
-                    ),
-                    DonationList(
-                      userType: userSnapshot['type'],
-                      available: false,
-                    ),
-                  ],
-                ),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Donation Dashboard"),
       ),
+      body: StreamBuilder<QuerySnapshot>(
+          stream:
+              FirebaseFirestore.instance.collection("donations").snapshots(),
+          builder: (_, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return const Center(child: Text("An error occurred"));
+            } else if (snapshot.data != null) {
+              // Available
+              var totalAvailableItems = snapshot.data!.docs.length;
+              var booksAvailable = snapshot.data!.docs
+                  .where((element) =>
+                      element['product'] == 'books' &&
+                      element["donate"] == true)
+                  .length;
+              var clothesAvailable = snapshot.data!.docs
+                  .where((element) =>
+                      element['product'] == 'clothes' &&
+                      element["donate"] == true)
+                  .length;
+              var othersAvailable =
+                  totalAvailableItems - booksAvailable - clothesAvailable;
+
+              // Required
+              var totalRequiredItems = snapshot.data!.docs.length;
+              var booksRequired = snapshot.data!.docs
+                  .where((element) =>
+                      element['product'] == 'books' &&
+                      element["donate"] == false)
+                  .length;
+              var clothesRequired = snapshot.data!.docs
+                  .where((element) =>
+                      element['product'] == 'clothes' &&
+                      element["donate"] == false)
+                  .length;
+              var othersRequired =
+                  totalRequiredItems - booksRequired - clothesRequired;
+
+              return ListView(
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                children: [
+                  //Available
+                  DashboardTile(
+                    available: true,
+                    width: double.infinity,
+                    gradient: ColorConstants.blueGradient,
+                    quantity: booksAvailable.toString(),
+                    label: "books",
+                    progress: booksAvailable / totalAvailableItems,
+                  ),
+                  DashboardTile(
+                    available: true,
+                    width: double.infinity,
+                    gradient: ColorConstants.pinkGradient,
+                    quantity: clothesAvailable.toString(),
+                    label: "clothes",
+                    progress: clothesAvailable / totalAvailableItems,
+                  ),
+                  DashboardTile(
+                    available: true,
+                    width: double.infinity,
+                    gradient: ColorConstants.amberGradient,
+                    quantity: othersAvailable.toString(),
+                    label: "other items",
+                    progress: othersAvailable / totalAvailableItems,
+                  ),
+
+                  // Required
+                  DashboardTile(
+                    available: false,
+                    width: double.infinity,
+                    gradient: ColorConstants.greenGradient,
+                    quantity: booksRequired.toString(),
+                    label: "books",
+                    progress: booksRequired / totalRequiredItems,
+                  ),
+                  DashboardTile(
+                    available: false,
+                    width: double.infinity,
+                    gradient: ColorConstants.darkPinkGradient,
+                    quantity: clothesRequired.toString(),
+                    label: "clothes",
+                    progress: clothesRequired / totalRequiredItems,
+                  ),
+                  DashboardTile(
+                    available: false,
+                    width: double.infinity,
+                    gradient: ColorConstants.purpleGradient,
+                    quantity: othersRequired.toString(),
+                    label: "other items",
+                    progress: othersRequired / totalRequiredItems,
+                  )
+                ],
+              );
+            } else {
+              return const Center(child: Text("no data found"));
+            }
+          }),
     );
   }
-
-  // Widget donationList(bool available) {
-  //   return StreamBuilder<QuerySnapshot>(
-  //       stream: FirebaseFirestore.instance
-  //           .collection("donations")
-  //           .where("donate", isEqualTo: available)
-  //           //.where("product", isEqualTo: "books")
-  //           .where("complete", isEqualTo: false)
-  //           .snapshots(),
-  //       builder: (_, snapshot) {
-  //         if (snapshot.connectionState == ConnectionState.waiting) {
-  //           return const Center(child: CircularProgressIndicator());
-  //         } else if (snapshot.hasError) {
-  //           return const Center(child: Text("An error occurred"));
-  //         } else if (snapshot.data != null) {
-  //           return ListView.builder(
-  //               shrinkWrap: true,
-  //               itemCount: snapshot.data?.docs.length,
-  //               itemBuilder: (_, index) {
-  //                 return DonationTile(snapshot: snapshot.data!.docs[index]);
-  //               });
-  //         } else {
-  //           return const Center(child: Text("no data found"));
-  //         }
-  //       });
-  // }
 }

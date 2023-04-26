@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sharethegood/ui/login/signup_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'login_screen.dart';
 
@@ -91,7 +92,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => const LoginScreen()));
+                            MaterialPageRoute(builder: (_) => const SignUpScreen()));
                       },
                       child: Text(
                         "Continue",

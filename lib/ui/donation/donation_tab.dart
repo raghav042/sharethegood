@@ -64,13 +64,165 @@ class DonationTab extends StatelessWidget {
           body: userSnapshot['type'] == "Individual"
               ? TabBarView(
                   children: [
-                    DonationList(
-                      userType: userSnapshot['type'],
-                      available: true,
+                    //Available
+                    Column(
+                      children: [
+                        //Books
+                        SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0,
+                              vertical: 12.0,
+                            ),
+                            child: SizedBox(
+                              height: 80,
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const DonationList(
+                                        product: "books",
+                                        available: true,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: colorScheme.primaryContainer,
+                                  foregroundColor:
+                                      colorScheme.onPrimaryContainer,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Books",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        //Clothes
+                        SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0,
+                              vertical: 12.0,
+                            ),
+                            child: SizedBox(
+                              height: 80,
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const DonationList(
+                                        product: "clothes",
+                                        available: true,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: colorScheme.primaryContainer,
+                                  foregroundColor:
+                                      colorScheme.onPrimaryContainer,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Clothes",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    DonationList(
-                      userType: userSnapshot['type'],
-                      available: false,
+                    //Required
+                    Column(
+                      children: [
+                        SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0,
+                              vertical: 12.0,
+                            ),
+                            child: SizedBox(
+                              height: 80,
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const DonationList(
+                                        product: "books",
+                                        available: false,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: colorScheme.primaryContainer,
+                                  foregroundColor:
+                                      colorScheme.onPrimaryContainer,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Books",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0,
+                              vertical: 12.0,
+                            ),
+                            child: SizedBox(
+                              height: 80,
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const DonationList(
+                                        product: "clothes",
+                                        available: false,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: colorScheme.primaryContainer,
+                                  foregroundColor:
+                                      colorScheme.onPrimaryContainer,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Clothes",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 )
@@ -90,7 +242,9 @@ class DonationTab extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (_) => DonationList(
-                                  userType: userSnapshot['type'],
+                                  product: userSnapshot['type'] == "NGO"
+                                      ? "clothes"
+                                      : "books",
                                   available: true,
                                 ),
                               ),
@@ -104,8 +258,8 @@ class DonationTab extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            "Available ${userSnapshot['type']}",
-                            style: TextStyle(fontSize: 20),
+                            "Available ${userSnapshot['type'] == "NGO" ? "Clothes" : "Books"}",
+                            style: const TextStyle(fontSize: 20),
                           ),
                         ),
                       ),
@@ -142,7 +296,6 @@ class DonationTab extends StatelessWidget {
                     //     ),
                     //   ),
                     // ),
-
                   ],
                 ),
         ),

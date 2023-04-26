@@ -5,30 +5,24 @@ import 'package:sharethegood/ui/donation/donation_tile.dart';
 class DonationList extends StatelessWidget {
   const DonationList({
     Key? key,
-    required this.userType,
+    required this.product,
     required this.available,
   }) : super(key: key);
-  final String userType;
+  final String product;
   final bool available;
 
   @override
   Widget build(BuildContext context) {
-    final individualStream = FirebaseFirestore.instance
+    final productStream = FirebaseFirestore.instance
         .collection("donations")
-        .where("donate", isEqualTo: available)
-        .where("complete", isEqualTo: false)
-        .snapshots();
-
-    final otherStream = FirebaseFirestore.instance
-        .collection("donations")
-        .where("product", isEqualTo: userType == "NGO" ? "clothes" : "books")
+        .where("product", isEqualTo: product)
         .where("donate", isEqualTo: available)
         .where("complete", isEqualTo: false)
         .snapshots();
 
     return Scaffold(
       body: StreamBuilder<QuerySnapshot>(
-          stream: userType == "Individual" ? individualStream : otherStream,
+          stream: productStream,
           builder: (_, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());

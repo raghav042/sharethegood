@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sharethegood/core/color_constant.dart';
 import 'package:sharethegood/services/firebase_helper.dart';
+import 'package:sharethegood/ui/donation/donation_dashboard.dart';
 import 'package:sharethegood/ui/donation/donation_screen.dart';
 
 class DonationButton extends StatelessWidget {
@@ -109,7 +110,14 @@ class DonationButton extends StatelessWidget {
                 width: MediaQuery.of(context).size.width / 2.5,
                 height: 125,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const DonationDashboard()));
+                  },
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.0)),

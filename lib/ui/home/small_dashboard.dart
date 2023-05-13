@@ -53,25 +53,11 @@ class _SmallDashboardState extends State<SmallDashboard> {
                 totalRequiredItems - booksRequired - clothesRequired;
 
             return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("Dashboard"),
-                      IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => const DonationDashboard()));
-                        },
-                        icon: const Icon(Icons.arrow_forward),
-                      )
-                    ],
-                  ),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(20, 40, 20, 10),
+                  child: Text("Dashboard", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                 ),
                 Wrap(
                   alignment: WrapAlignment.center,

@@ -10,10 +10,11 @@ class FirebaseHelper {
   static final FirebaseAuth auth = FirebaseAuth.instance;
   static final CollectionReference usersCol = FirebaseFirestore.instance.collection("users");
   static final CollectionReference donationCol = FirebaseFirestore.instance.collection("donations");
+  static CollectionReference commentCol(String donationId) => donationCol.doc(donationId).collection("comments");
+  static CollectionReference receiverCol(String donationId) => donationCol.doc(donationId).collection("receivers");
 
   static final String userType = userData!['type'];
-  static final String productType = userType == "NGO" ? "clothes" : "books";
-
+  static final String productType = userType == "Ngo" ? "clothes" : "books";
 
   static final _giverStream = usersCol.where("type", isEqualTo: "Individual").snapshots();
   static final _takerStream = usersCol.where("type", isNotEqualTo: "Individual").snapshots();

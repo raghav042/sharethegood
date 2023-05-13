@@ -1,11 +1,10 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sharethegood/ui/home/home_screen.dart';
+import 'package:sharethegood/ui/main_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key, required this.accountType})
@@ -24,7 +23,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final address = TextEditingController();
 
   bool isLoading = false;
-  String? libraryImage;
   String? libraryProof;
 
   @override
@@ -71,27 +69,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   height: 250,
                 ),
                 const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                        onPressed: () {
-                          pickImage().then((value) {
-                            setState(() {
-                              libraryImage = value;
-                            });
-                          });
-                        },
-                        child: const Text("Library Image")),
-                    libraryImage != null
-                        ? const Icon(
-                            Icons.check_box,
-                            color: Colors.green,
-                            size: 30,
-                          )
-                        : const SizedBox(),
-                  ],
-                ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -103,7 +81,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             });
                           });
                         },
-                        child: const Text("Library Proof")),
+                        child: const Text("Organisation Proof")),
                     libraryProof != null
                         ? const Icon(
                             Icons.check_box,
@@ -208,29 +186,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       isLoading = true;
     });
     try {
-      if (libraryImage != null && libraryProof != null) {
-        final image = File(libraryImage!);
+      if (libraryProof != null) {
+
         final proof = File(libraryProof!);
-        final imageName = libraryImage?.split("/").last;
         final proofName = libraryProof?.split("/").last;
-        final imageRef = storage.ref("users").child(uid!).child(imageName!);
         final proofRef = storage.ref("users").child(uid!).child(proofName!);
 
         final metaData = SettableMetadata(contentType: "image/jpeg");
         // upload image to firebase storage database
-        await imageRef.putFile(image, metaData);
         await proofRef.putFile(proof, metaData);
 
         //get url of uploaded image
-        final imageUrl = await imageRef.getDownloadURL();
         final proofUrl = await proofRef.getDownloadURL();
 
         //save user data to firestore
         await firestore.collection("users").doc(uid).update({
-          "orgImage": imageUrl,
           "orgProof": proofUrl,
           "orgName": name.text.trim(),
-          "orgAddress": address.text.trim(),
+          "address": address.text.trim(),
         }).then((value) {
           // stop loading indicator
           setState(() {
@@ -238,7 +211,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           });
           // navigate to HomeScreen
           navigator.pushReplacement(
-              MaterialPageRoute(builder: (context) => const HomeScreen()));
+              MaterialPageRoute(builder: (context) => const MainScreen()));
         });
       }
       //catch error

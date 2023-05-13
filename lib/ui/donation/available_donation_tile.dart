@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:sharethegood/services/firebase_helper.dart';
 import 'donation_details.dart';
 
 class AvailableDonationTile extends StatelessWidget {
@@ -18,6 +19,11 @@ class AvailableDonationTile extends StatelessWidget {
             MaterialPageRoute(
                 builder: (_) => DonationDetails(snapshot: snapshot)));
       },
+      onLongPress: snapshot['receiverId'] == FirebaseHelper.userData!['uid']
+          ? () {
+              updateRecord(context);
+            }
+          : null,
       borderRadius: BorderRadius.circular(8.0),
       child: Container(
         padding: const EdgeInsets.symmetric(
@@ -110,5 +116,81 @@ class AvailableDonationTile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void updateRecord(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 50,
+                child: Divider(
+                  thickness: 3,
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 12),
+              child: Text("have you received this item"),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width / 2 - 40,
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorScheme.surfaceVariant,
+                      foregroundColor: colorScheme.onSurfaceVariant,
+                    ),
+                    onPressed: () {
+                      completeDonation(context);
+                    },
+                    icon: const Icon(Icons.check),
+                    label: const Text("Yes Received"),
+                  ),
+                ),
+                SizedBox(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width / 2 - 40,
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorScheme.tertiaryContainer,
+                      foregroundColor: colorScheme.onTertiaryContainer,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.close),
+                    label: const Text("Not Received"),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+      constraints: const BoxConstraints(maxHeight: 200),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+    );
+  }
+
+  Future<void> completeDonation(BuildContext context) async {
+    await FirebaseHelper.donationCol
+        .doc(snapshot['donationId'])
+        .update({"complete": true});
+    Navigator.of(context).pop();
   }
 }

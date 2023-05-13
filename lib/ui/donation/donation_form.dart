@@ -4,7 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sharethegood/ui/home/home_screen.dart';
+import 'package:sharethegood/services/firebase_helper.dart';
+import 'package:sharethegood/ui/main_screen.dart';
 import 'input_text.dart';
 import 'package:sharethegood/core/labels.dart';
 
@@ -66,22 +67,6 @@ class _DonationFormState extends State<DonationForm> {
               ),
             ),
 
-            //     ? ElevatedButton(
-            //         onPressed: () {
-            //           updateImage(context);
-            //         },
-            //         child: Text(
-            //           imagePath != null ? "Replace Images" : "Pick Image",
-            //         ),
-            //       )
-            //     : const SizedBox(),
-            // widget.donate && imagePath != null
-            //     ? Image.file(
-            //         File(imagePath!),
-            //         height: 250,
-            //         filterQuality: FilterQuality.low,
-            //       )
-            //     : const SizedBox(),
             InputText(label: 'Title', controller: label),
             buildProductType(colorScheme),
             InputText(label: "Short Description", controller: shortDesc),
@@ -282,7 +267,7 @@ class _DonationFormState extends State<DonationForm> {
     setState(() {
       isUploading = true;
     });
-    if (widget.donate) {
+    if (imagePath != null) {
       imageUrl = await uploadImageToStorage();
     }
     await saveToFirestore(imageUrl);
@@ -290,7 +275,7 @@ class _DonationFormState extends State<DonationForm> {
       isUploading = false;
     });
     navigator.pushAndRemoveUntil(
-        (MaterialPageRoute(builder: (_) => const HomeScreen())),
+        (MaterialPageRoute(builder: (_) => const MainScreen())),
         (route) => false);
   }
 
@@ -316,10 +301,13 @@ class _DonationFormState extends State<DonationForm> {
     try {
       // save data to firestore
       await firestore.collection("donations").doc(timeStamp.toString()).set({
-        "postedBy": uid,
-        "photoUrl": photoUrl,
+        "postedBy": FirebaseHelper.userData!['uid'],
+        "photoUrl": FirebaseHelper.userData!['photoUrl'],
+        "name": FirebaseHelper.userData!['name'],
+        "phone": FirebaseHelper.userData!['phone'],
         "complete": false,
         "donate": widget.donate,
+        "receiverId": "",
         "likes": 0,
         "dislikes": 0,
         "donationId": timeStamp.toString(),

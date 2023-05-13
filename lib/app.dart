@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:sharethegood/ui/auth_service.dart';
+import 'package:sharethegood/ui/login/signup_screen.dart';
 import 'core/theme/dark_theme.dart';
 import 'core/theme/light_theme.dart';
 

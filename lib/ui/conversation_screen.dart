@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sharethegood/services/firebase_helper.dart';
 
 class ConversationScreen extends StatefulWidget {
-  const ConversationScreen({Key? key, required this.snapshot})
-      : super(key: key);
-  final DocumentSnapshot snapshot;
+  const ConversationScreen({Key? key, required this.uid}) : super(key: key);
+  final String uid;
 
   @override
   State<ConversationScreen> createState() => _ConversationScreenState();
@@ -15,12 +15,13 @@ class _ConversationScreenState extends State<ConversationScreen> {
   final uid = FirebaseAuth.instance.currentUser?.uid;
   final firestore = FirebaseFirestore.instance;
   final messageController = TextEditingController();
-
   late bool isTyping;
   late String chatId;
+  DocumentSnapshot? snapshot;
 
   @override
   void initState() {
+    getSnapshot();
     chatId = getChatId();
     super.initState();
   }
@@ -35,7 +36,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      appBar: AppBar(title: Text(widget.snapshot['name'])),
+      appBar: AppBar(title: Text(snapshot?['name'] ?? "")),
       body: Stack(
         children: [
           StreamBuilder<QuerySnapshot>(
@@ -96,35 +97,39 @@ class _ConversationScreenState extends State<ConversationScreen> {
                   return const Text("No message found");
                 }
               }),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width - 80,
-                    child: TextFormField(
-                      controller: messageController,
-                      minLines: 1,
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        filled: true,
-                        hintText: "Type something",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 80,
+                      child: TextFormField(
+                        controller: messageController,
+                        minLines: 1,
+                        maxLines: 5,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          hintText: "Type something",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
                       ),
                     ),
-                  ),
-                  FloatingActionButton(
-                    onPressed: () {
-                      sendMessage();
-                    },
-                    child: const Icon(Icons.send),
-                  ),
-                ],
+                    FloatingActionButton(
+                      onPressed: () {
+                        sendMessage();
+                      },
+                      elevation: 0,
+                      child: const Icon(Icons.send),
+                    ),
+                  ],
+                ),
               ),
             ),
           )
@@ -133,11 +138,18 @@ class _ConversationScreenState extends State<ConversationScreen> {
     );
   }
 
+  Future<void> getSnapshot() async {
+    var snap = await FirebaseHelper.usersCol.doc(widget.uid).get();
+    setState(() {
+      snapshot = snap;
+    });
+  }
+
   String getChatId() {
-    if (uid.hashCode <= widget.snapshot['uid'].hashCode) {
-      return '$uid-${widget.snapshot['uid']}';
+    if (uid.hashCode <= widget.uid.hashCode) {
+      return '$uid-${widget.uid}';
     } else {
-      return '${widget.snapshot['uid']}-$uid';
+      return '${widget.uid}-$uid';
     }
   }
 

@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:sharethegood/ui/conversation_screen.dart';
 import 'package:sharethegood/ui/donation/comments.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DonationDetails extends StatefulWidget {
   const DonationDetails({Key? key, required this.snapshot}) : super(key: key);
@@ -17,14 +17,9 @@ class DonationDetails extends StatefulWidget {
 class _DonationDetailsState extends State<DonationDetails> {
   final firestore = FirebaseFirestore.instance;
   final uid = FirebaseAuth.instance.currentUser?.uid;
-  DocumentSnapshot? userSnapshot;
   bool? isLiked;
 
-  @override
-  void initState() {
-    getUserData();
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +35,23 @@ class _DonationDetailsState extends State<DonationDetails> {
           ),
         ),
         actions: [
-          CircleAvatar(
-            backgroundImage: CachedNetworkImageProvider(
-              widget.snapshot['photoUrl'],
-            ),
+
+          IconButton(
+            onPressed: () {
+              Share.share(
+                  "hi checkout this amazing donation app available on Google play store https://play.google.com/store/apps/details?id=com.sharethegood.sharethegood");
+            },
+            icon: const Icon(Icons.share),
           ),
-          const SizedBox(width: 20),
+          IconButton(
+            onPressed: () async {
+              Uri uri = Uri.parse("tel:${widget.snapshot['phone']}");
+              await launchUrl(uri);
+            },
+
+            icon: const Icon(Icons.call),
+          ),
+          const SizedBox(width: 8),
         ],
       ),
       body: SingleChildScrollView(
@@ -54,9 +60,24 @@ class _DonationDetailsState extends State<DonationDetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              widget.snapshot['donate']
+              Row(mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: CachedNetworkImageProvider(
+                      widget.snapshot['photoUrl'],
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Text( widget.snapshot['name']),
+                ],
+              ),
+              const SizedBox(height: 20),
+
+
+
+              widget.snapshot['image'] != ""
                   ? ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(16.0),
                       child: CachedNetworkImage(
                         imageUrl: widget.snapshot['image'],
                         filterQuality: FilterQuality.none,
@@ -67,30 +88,6 @@ class _DonationDetailsState extends State<DonationDetails> {
                     )
                   : const SizedBox(),
               const SizedBox(height: 15),
-
-              // Padding(
-              //   padding: const EdgeInsets.all(16.0),
-              //   child: Row(
-              //     crossAxisAlignment: CrossAxisAlignment.center,
-              //     mainAxisAlignment: MainAxisAlignment.start,
-              //     children: [
-              //       CircleAvatar(
-              //         backgroundImage: CachedNetworkImageProvider(
-              //           widget.snapshot['photoUrl'],
-              //         ),
-              //       ),
-              //       const SizedBox(width: 15),
-              //       Text(
-              //         widget.snapshot['label'].toString().toUpperCase(),
-              //         style: TextStyle(
-              //           fontSize: 18,
-              //           fontWeight: FontWeight.bold,
-              //           color: colorScheme.primary,
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
               Container(
                 padding: const EdgeInsets.all(12.0),
                 decoration: BoxDecoration(
@@ -156,71 +153,23 @@ class _DonationDetailsState extends State<DonationDetails> {
                 ),
               ),
               const SizedBox(height: 10),
-
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (_) {
-                            return Comments(
-                              uid: userSnapshot!['uid'],
-                              donationId: widget.snapshot['donationId'],
-                            );
-                          });
-                    },
-                    icon: Icon(Icons.forum_outlined),
-                  ),
-                  SizedBox(width: 10),
-                  IconButton(
-                    onPressed: () {
-                      Share.share(
-                          "hi checkout this amazing donation app available on Google play store https://play.google.com/store/apps/details?id=com.sharethegood.sharethegood");
-                    },
-                    icon: Icon(Icons.share),
-                  ),
-                ],
+              ExpansionTile(
+                tilePadding: EdgeInsets.zero,
+                title: const Row(
+                  children: [
+                    Icon(Icons.forum),
+                    SizedBox(width: 10),
+                    Text("view comments"),
+                  ],
+                ),
+                children: [Comments(donationId: widget.snapshot['donationId'])],
               ),
-
               const SizedBox(height: 20),
             ],
           ),
         ),
       ),
-      floatingActionButton: widget.snapshot['uid'] != uid
-          ? SizedBox(
-              width: 300,
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          ConversationScreen(snapshot: userSnapshot!),
-                    ),
-                  );
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text("Continue"),
-                    SizedBox(width: 20),
-                    Icon(Icons.arrow_forward),
-                  ],
-                ),
-              ),
-            )
-          : const SizedBox(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
-  void getUserData() async {
-    final snapshot =
-        await firestore.collection('users').doc(widget.snapshot['uid']).get();
-    setState(() {
-      userSnapshot = snapshot;
-    });
-  }
 }

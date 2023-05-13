@@ -44,11 +44,13 @@ class _MainScreenState extends State<MainScreen> {
             selectedIcon: Icon(Icons.volunteer_activism),
             label: "Available",
           ),
+
           NavigationDestination(
             icon: Icon(Icons.diversity_3_outlined),
             selectedIcon: Icon(Icons.diversity_3),
             label: "Required",
           ),
+
           NavigationDestination(
             icon: Icon(Icons.diversity_1_outlined),
             selectedIcon: Icon(Icons.diversity_1),

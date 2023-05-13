@@ -6,6 +6,7 @@ import 'package:sharethegood/services/firebase_helper.dart';
 import 'package:sharethegood/ui/home/home_screen.dart';
 import 'package:sharethegood/ui/login/registration_screen.dart';
 import 'signin_screen.dart';
+import '../../services/get_location.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -32,6 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   static const List<String> listUserType = ["Individual", "Ngo", "Library"];
   CountryCode countryCode = CountryCode.fromDialCode("+91");
   String userType = "Individual";
+  AppLocation? appLocation;
 
   @override
   void dispose() {
@@ -196,6 +198,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
+              appLocation == null
+                  ? Padding(
+                      padding: const EdgeInsets.fromLTRB(25, 20, 25, 0),
+                      child: SizedBox(
+                        height: 55,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4.0),
+                            ),
+                          ),
+                          onPressed: () async {
+                            appLocation = await getLocation();
+                            setState(() {});
+                          },
+                          child: Text(
+                            "get Location",
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
+
               Padding(
                 padding: const EdgeInsets.fromLTRB(25, 40, 25, 20),
                 child: SizedBox(
@@ -229,6 +260,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -372,7 +404,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "joinAt": DateTime.now().minute,
           "give": 0,
           "take": 0,
-          "phone": countryCode.dialCode ?? "",
+          "latitude": appLocation?.latitude ?? 0.0,
+          "longitude": appLocation?.longitude ?? 0.0,
+          "address": "",
+
+          "phone": countryCode.dialCode! + phoneController.text.trim(),
           "photoUrl": "https://firebasestorage.googleapis.com/v0/b/share-the-good.appspot.com/o/appdata%2FprofileImage%2Fuser.png?alt=media&token=c4a1261c-ea59-422a-be82-8310d613f114",
         };
 

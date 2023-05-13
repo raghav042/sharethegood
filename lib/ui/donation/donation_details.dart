@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:sharethegood/ui/conversation_screen.dart';
 import 'package:sharethegood/ui/donation/comments.dart';
-import 'package:sharethegood/ui/users/conversation_screen.dart';
 
 class DonationDetails extends StatefulWidget {
   const DonationDetails({Key? key, required this.snapshot}) : super(key: key);

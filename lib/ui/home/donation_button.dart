@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sharethegood/core/color_constant.dart';
+import 'package:sharethegood/services/firebase_helper.dart';
 import 'package:sharethegood/ui/donation/donation_screen.dart';
-
 
 class DonationButton extends StatelessWidget {
   const DonationButton({Key? key}) : super(key: key);
@@ -14,48 +14,50 @@ class DonationButton extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30.0),
-          width: double.infinity,
-          height: 155,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            gradient: ColorConstants.pinkGradient,
-          ),
-          child: TextButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                      const DonationScreen(donate: true)));
-            },
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.white,
-              shape: const RoundedRectangleBorder(),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                Icon(
-                  Icons.volunteer_activism,
-                  size: 50,
-                  color: Colors.white,
+        FirebaseHelper.userData!['type'] == "Individual"
+            ? Container(
+                margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                width: double.infinity,
+                height: 155,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  gradient: ColorConstants.pinkGradient,
                 ),
-                SizedBox(height: 10),
-                Text(
-                  "Add donation",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const DonationScreen(donate: true)));
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    shape: const RoundedRectangleBorder(),
                   ),
-                )
-              ],
-            ),
-          ),
-        ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        Icons.volunteer_activism,
+                        size: 50,
+                        color: Colors.white,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "Add donation",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            : SizedBox(),
         const SizedBox(height: 30),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,11 +73,14 @@ class DonationButton extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                            const DonationScreen(donate: false)));
+                                const DonationScreen(donate: false)));
                   },
                   style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                    backgroundColor: isDarkMode ? colorScheme.primaryContainer : Colors.pink.shade50,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0)),
+                    backgroundColor: isDarkMode
+                        ? colorScheme.primaryContainer
+                        : Colors.pink.shade50,
                     foregroundColor: colorScheme.onPrimaryContainer,
                   ),
                   child: Column(
@@ -84,7 +89,6 @@ class DonationButton extends StatelessWidget {
                       Icon(
                         Icons.add_circle_outline,
                         size: 40,
-
                       ),
                       const Text(
                         "Add Requirement",
@@ -105,12 +109,13 @@ class DonationButton extends StatelessWidget {
                 width: MediaQuery.of(context).size.width / 2.5,
                 height: 125,
                 child: TextButton(
-                  onPressed: () {
-
-                  },
+                  onPressed: () {},
                   style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                    backgroundColor: isDarkMode ? colorScheme.primaryContainer : Colors.pink.shade50,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0)),
+                    backgroundColor: isDarkMode
+                        ? colorScheme.primaryContainer
+                        : Colors.pink.shade50,
                     foregroundColor: colorScheme.onPrimaryContainer,
                   ),
                   child: Column(
@@ -119,7 +124,6 @@ class DonationButton extends StatelessWidget {
                       Icon(
                         Icons.dashboard_outlined,
                         size: 40,
-
                       ),
                       const Text(
                         "Dashboard",

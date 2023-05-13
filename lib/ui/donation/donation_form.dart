@@ -6,12 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sharethegood/ui/home/home_screen.dart';
 import 'input_text.dart';
+import 'package:sharethegood/core/labels.dart';
 
 class DonationForm extends StatefulWidget {
-  const DonationForm({Key? key, required this.donate, required this.product})
+  const DonationForm({Key? key, required this.donate})
       : super(key: key);
   final bool donate;
-  final String product;
+
 
   @override
   State<DonationForm> createState() => _DonationFormState();
@@ -27,6 +28,8 @@ class _DonationFormState extends State<DonationForm> {
   final quantity = TextEditingController();
   String? imagePath;
   bool isUploading = false;
+  String product = "books";
+
 
   @override
   void initState() {
@@ -80,6 +83,7 @@ class _DonationFormState extends State<DonationForm> {
             //       )
             //     : const SizedBox(),
             InputText(label: 'Title', controller: label),
+            buildProductType(colorScheme),
             InputText(label: "Short Description", controller: shortDesc),
             InputText(label: "Long Description", controller: longDesc),
             InputText(label: "Quantity", controller: quantity),
@@ -128,18 +132,68 @@ class _DonationFormState extends State<DonationForm> {
           ],
         ),
       ),
-      floatingActionButton: widget.donate
-          ? FloatingActionButton.extended(
+      floatingActionButton:
+          FloatingActionButton.extended(
               onPressed: () {
                 showImagePicker(context);
               },
               icon: const Icon(Icons.image),
               label: Text(imagePath == null ? "Add image" : "Change Image"),
             )
-          : const SizedBox(),
+          ,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     );
   }
+
+  Widget buildProductType(ColorScheme colorScheme) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 8,
+        horizontal: 25,
+      ),
+      child: InputDecorator(
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.all(6),
+          border: OutlineInputBorder(),
+        ),
+        child: DropdownButton<String>(
+            isExpanded: true,
+            value: product,
+            hint: const Row(
+              children: [
+                Icon(Icons.category),
+                SizedBox(width: 15),
+                Text("User Type"),
+              ],
+            ),
+            style: TextStyle(
+              fontSize: 14,
+              color: colorScheme.onBackground,
+            ),
+            borderRadius: BorderRadius.circular(8.0),
+            underline: const SizedBox(),
+            items: donationLabels
+                .map((e) => DropdownMenuItem<String>(
+              value: e,
+              child: Row(
+                children: [
+                  const Icon(Icons.category),
+                  const SizedBox(width: 15),
+                  Text(e),
+                ],
+              ),
+            ))
+                .toList(),
+            onChanged: (value) {
+              setState(() {
+                product = value!;
+              });
+            }),
+      ),
+    );
+  }
+
+
 
   void showImagePicker(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -270,7 +324,7 @@ class _DonationFormState extends State<DonationForm> {
         "dislikes": 0,
         "donationId": timeStamp.toString(),
         "image": imageUrl ?? "",
-        "product": widget.product,
+        "product": product,
         "label": label.text.trim(),
         "shortDesc": shortDesc.text.trim(),
         "longDesc": longDesc.text.trim(),

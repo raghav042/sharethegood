@@ -262,8 +262,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: DropdownButton<String>(
             isExpanded: true,
             value: userType,
-            hint: Row(
-              children: const [
+            hint: const Row(
+              children: [
                 Icon(Icons.category),
                 SizedBox(width: 15),
                 Text("User Type"),

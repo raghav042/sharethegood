@@ -49,7 +49,7 @@ class AvailableDonationTile extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   )
-                : SizedBox(),
+                : const SizedBox(),
             const Spacer(),
             SizedBox(
               width: snapshot["image"] != ""

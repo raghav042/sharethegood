@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sharethegood/core/color_constant.dart';
-import 'package:sharethegood/ui/donation/dashboard_tile.dart';
+import 'package:sharethegood/ui/dashboard/dashboard_tile.dart';
+
 
 class DonationDashboard extends StatelessWidget {
   const DonationDashboard({Key? key}) : super(key: key);

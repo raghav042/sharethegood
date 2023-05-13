@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:sharethegood/core/color_constant.dart';
 import 'package:sharethegood/services/firebase_helper.dart';
-import 'package:sharethegood/ui/donation/donation_dashboard.dart';
-import 'package:sharethegood/ui/donation/donation_screen.dart';
+import 'package:sharethegood/ui/dashboard/donation_dashboard.dart';
+import 'package:sharethegood/ui/donation/donation_form.dart';
 
 class DonationButton extends StatelessWidget {
   const DonationButton({Key? key}) : super(key: key);
@@ -30,17 +29,17 @@ class DonationButton extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                const DonationScreen(donate: true)));
+                                const DonationForm(donate: true)));
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
                     shape: const RoundedRectangleBorder(),
                   ),
-                  child: Column(
+                  child: const Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(
                         Icons.volunteer_activism,
                         size: 50,
@@ -58,7 +57,7 @@ class DonationButton extends StatelessWidget {
                   ),
                 ),
               )
-            : SizedBox(),
+            : const SizedBox(),
         const SizedBox(height: 30),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,7 +73,7 @@ class DonationButton extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                const DonationScreen(donate: false)));
+                                const DonationForm(donate: false)));
                   },
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -84,14 +83,14 @@ class DonationButton extends StatelessWidget {
                         : Colors.pink.shade50,
                     foregroundColor: colorScheme.onPrimaryContainer,
                   ),
-                  child: Column(
+                  child: const Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
                         Icons.add_circle_outline,
                         size: 40,
                       ),
-                      const Text(
+                      Text(
                         "Add Requirement",
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -111,8 +110,6 @@ class DonationButton extends StatelessWidget {
                 height: 125,
                 child: TextButton(
                   onPressed: () {
-
-
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -126,14 +123,14 @@ class DonationButton extends StatelessWidget {
                         : Colors.pink.shade50,
                     foregroundColor: colorScheme.onPrimaryContainer,
                   ),
-                  child: Column(
+                  child: const Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
                         Icons.dashboard_outlined,
                         size: 40,
                       ),
-                      const Text(
+                      Text(
                         "Dashboard",
                         textAlign: TextAlign.center,
                         style: TextStyle(

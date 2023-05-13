@@ -5,18 +5,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sharethegood/services/firebase_helper.dart';
 import 'package:sharethegood/ui/users/conversation_screen.dart';
 import 'profile_settings.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key, required this.snapshot}) : super(key: key);
-  final DocumentSnapshot snapshot;
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final userData = FirebaseHelper.userData;
   final uid = FirebaseAuth.instance.currentUser?.uid;
   final firestore = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
@@ -28,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late bool isMe;
   @override
   void initState() {
-    isMe = widget.snapshot['uid'] == uid;
+    isMe = userData!['uid'] == uid;
     super.initState();
   }
 
@@ -54,20 +55,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Stack(
                 alignment: AlignmentDirectional.center,
                 children: [
-                  SizedBox(
-                    height: 200,
-                    width: 200,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: imagePath != null
-                          ? Image.file(
-                              File(imagePath!),
-                              fit: BoxFit.cover,
-                            )
-                          : CachedNetworkImage(
-                              imageUrl: widget.snapshot['photoUrl'],
-                              fit: BoxFit.cover,
-                            ),
+                  Hero(
+                    tag: "profile_pic",
+                    child: SizedBox(
+                      height: 200,
+                      width: 200,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: imagePath != null
+                            ? Image.file(
+                                File(imagePath!),
+                                fit: BoxFit.cover,
+                              )
+                            : CachedNetworkImage(
+                                imageUrl: userData!['photoUrl'],
+                                fit: BoxFit.cover,
+                              ),
+                      ),
                     ),
                   ),
                   isUploading
@@ -103,20 +107,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 30, 20, 4),
               child: Text(
-                widget.snapshot['name'],
+                userData!['name'],
                 style: const TextStyle(fontSize: 30),
               ),
             ),
             Text(
-              "Email :  ${widget.snapshot['email']}",
+              "Email :  ${userData!['email']}",
               style: const TextStyle(fontSize: 16),
             ),
             Text(
-              "Account Type :  ${widget.snapshot['type']}",
+              "Account Type :  ${userData!['type']}",
               style: const TextStyle(fontSize: 16),
             ),
             isMe
-                ? ProfileSettings(uid: widget.snapshot['uid'])
+                ? ProfileSettings(uid: userData!['uid'])
                 : Padding(
                     padding: const EdgeInsets.all(40.0),
                     child: SizedBox(
@@ -124,11 +128,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       width: double.infinity,
                       child: ElevatedButton.icon(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ConversationScreen(
-                                        snapshot: widget.snapshot)));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => ConversationScreen(
+                            //             snapshot: userData!)));
                           },
                           icon: const Icon(Icons.message),
                           label: const Text("Send Message")),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../core/color_constant.dart';
 
 class DashboardTile extends StatelessWidget {
   const DashboardTile({
     Key? key,
-    required this.gradient,
+    this.gradient = ColorConstants.blueGradient,
     required this.label,
     required this.quantity,
     required this.progress,
@@ -11,7 +13,7 @@ class DashboardTile extends StatelessWidget {
     required this.width,
     this.height,
   }) : super(key: key);
-  final Gradient gradient;
+  final Gradient? gradient;
   final String label;
   final String quantity;
   final double progress;
@@ -21,7 +23,9 @@ class DashboardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isBig = width > 150;
+    final isBig = width > MediaQuery.of(context).size.width/2;
+    final colorScheme = Theme.of(context).colorScheme;
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       height: height ?? 180,
       width: width,
@@ -31,7 +35,7 @@ class DashboardTile extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        gradient: gradient,
+        color:isDarkMode ? colorScheme.surfaceVariant : Colors.teal.shade50,
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Column(
@@ -44,9 +48,9 @@ class DashboardTile extends StatelessWidget {
             children: [
               Text(
                 quantity,
-                style: const TextStyle(
-                  fontSize: 50,
-                  color: Colors.white,
+                style: GoogleFonts.kalam(
+                  fontSize: 60,
+                  color: colorScheme.primary,
                 ),
               ),
               const SizedBox(width: 10),
@@ -54,7 +58,7 @@ class DashboardTile extends StatelessWidget {
                 isBig ? label.toUpperCase() : "",
                 style: const TextStyle(
                   fontSize: 20,
-                  color: Colors.white,
+                  //color: Colors.white,
                 ),
               ),
               const Expanded(child: SizedBox()),
@@ -68,7 +72,7 @@ class DashboardTile extends StatelessWidget {
                       width: isBig ? 100 : 50,
                       child: CircularProgressIndicator(
                         value: progress,
-                        color: Colors.white,
+                       // color: Colors.white,
                       ),
                     ),
                     Center(
@@ -77,7 +81,7 @@ class DashboardTile extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          //color: Colors.white,
                         ),
                       ),
                     ),
@@ -88,13 +92,12 @@ class DashboardTile extends StatelessWidget {
           ),
           Text(
             (available
-                    ? "people available to donate "
-                    : "people want donation ") +
+                    ? "people donate "
+                    : "people want ") +
                 (isBig ? "" : label),
             style: const TextStyle(
               fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+              //color: Colors.white,
             ),
           ),
         ],

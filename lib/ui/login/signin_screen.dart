@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sharethegood/services/firebase_helper.dart';
 import 'package:sharethegood/ui/home/home_screen.dart';
 import 'package:sharethegood/ui/login/signup_screen.dart';
+import 'package:sharethegood/ui/main_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -148,7 +151,7 @@ class _SignInScreenState extends State<SignInScreen> {
   String? validateMail(String? mail) {
     if (mail == null || mail.isEmpty) {
       return "enter email";
-    } else if (!RegExp(r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$").hasMatch(mail)) {
+    } else if (!RegExp(r'\S+@\S+\.\S+').hasMatch(mail)) {
       return "enter valid mail";
     } else {
       return null;
@@ -184,13 +187,20 @@ class _SignInScreenState extends State<SignInScreen> {
       );
       User? user = userCredential.user;
       if (user != null) {
+        await FirebaseHelper.getUserData(user.uid).then(
+          (value) async => await FirebaseHelper.saveUserData(value),
+        );
+
         //stop loading indicator
         setState(() {
           isLoading = false;
         });
         // navigate to HomeScreen
-        navigator.pushReplacement(
-            MaterialPageRoute(builder: (context) => const HomeScreen()));
+
+        navigator.pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const MainScreen()),
+          (route) => false,
+        );
       }
     } on FirebaseAuthException catch (e) {
       //stop loading indicator

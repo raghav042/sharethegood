@@ -52,4 +52,32 @@ class ColorConstants {
       Color(0xffaa076b),
     ],
   );
+
+  static const primaryGradient = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [
+      Color(0xff5EABFA),
+      Color(0xff0552A0),
+    ],
+  );
+
+  static const secondaryGradient = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [
+      Color(0xffFFA560),
+      Color(0xffFFCE4D),
+    ],
+  );
+
+
+  static final simpleGradient = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [
+      Colors.blue,
+      Colors.blue.shade100
+    ],
+  );
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sharethegood/ui/login/signup_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'login_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -91,8 +90,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => const SignUpScreen()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const SignUpScreen()));
                       },
                       child: Text(
                         "Continue",

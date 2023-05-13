@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sharethegood/ui/login/welcome_screen.dart';
-import '../ui/home/home_screen.dart';
+import 'main_screen.dart';
 
 class AuthService extends StatelessWidget {
   const AuthService({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class AuthService extends StatelessWidget {
           } else if (snapshot.hasError) {
             return const WelcomeScreen();
           } else if (snapshot.data != null) {
-            return const HomeScreen();
+            return const MainScreen();
           } else {
             return const WelcomeScreen();
           }

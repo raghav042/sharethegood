@@ -1,14 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sharethegood/core/color_constant.dart';
 import 'package:sharethegood/ui/donation/dashboard_tile.dart';
 import 'package:sharethegood/ui/donation/donation_dashboard.dart';
 
-class DashboardRow extends StatelessWidget {
-  const DashboardRow({Key? key}) : super(key: key);
+class SmallDashboard extends StatefulWidget {
+  const SmallDashboard({Key? key}) : super(key: key);
 
   @override
+  State<SmallDashboard> createState() => _SmallDashboardState();
+}
+
+class _SmallDashboardState extends State<SmallDashboard> {
+  @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width / 2 - 30;
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection("donations").snapshots(),
         builder: (_, snapshot) {
@@ -46,10 +53,10 @@ class DashboardRow extends StatelessWidget {
                 totalRequiredItems - booksRequired - clothesRequired;
 
             return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -66,48 +73,40 @@ class DashboardRow extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 180,
-                  child: ListView(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      //Available
-                      DashboardTile(
-                        available: true,
-                        width: 150,
-                        gradient: ColorConstants.blueGradient,
-                        quantity: booksAvailable.toString(),
-                        label: "books",
-                        progress: booksAvailable / totalAvailableItems,
-                      ),
-                      DashboardTile(
-                        available: true,
-                        width: 150,
-                        gradient: ColorConstants.pinkGradient,
-                        quantity: clothesAvailable.toString(),
-                        label: "clothes",
-                        progress: clothesAvailable / totalAvailableItems,
-                      ),
-                      //Required
-                      DashboardTile(
-                        available: false,
-                        width: 150,
-                        gradient: ColorConstants.greenGradient,
-                        quantity: booksRequired.toString(),
-                        label: "books",
-                        progress: booksRequired / totalRequiredItems,
-                      ),
-                      DashboardTile(
-                        available: false,
-                        width: 150,
-                        gradient: ColorConstants.darkPinkGradient,
-                        quantity: clothesRequired.toString(),
-                        label: "clothes",
-                        progress: clothesRequired / totalRequiredItems,
-                      ),
-                    ],
-                  ),
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  children: [
+                    //Available
+                    DashboardTile(
+                      available: true,
+                      width: width,
+                      quantity: booksAvailable.toString(),
+                      label: "books",
+                      progress: booksAvailable / totalAvailableItems,
+                    ),
+                    DashboardTile(
+                      available: true,
+                      width: width,
+                      quantity: clothesAvailable.toString(),
+                      label: "clothes",
+                      progress: clothesAvailable / totalAvailableItems,
+                    ),
+                    //Required
+                    DashboardTile(
+                      available: false,
+                      width: width,
+                      quantity: booksRequired.toString(),
+                      label: "books",
+                      progress: booksRequired / totalRequiredItems,
+                    ),
+                    DashboardTile(
+                      available: false,
+                      width: width,
+                      quantity: clothesRequired.toString(),
+                      label: "clothes",
+                      progress: clothesRequired / totalRequiredItems,
+                    ),
+                  ],
                 ),
               ],
             );

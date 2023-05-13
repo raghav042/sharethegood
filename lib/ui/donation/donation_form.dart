@@ -18,6 +18,7 @@ class DonationForm extends StatefulWidget {
 }
 
 class _DonationFormState extends State<DonationForm> {
+  final firestore = FirebaseFirestore.instance;
   final uid = FirebaseAuth.instance.currentUser?.uid;
   String? photoUrl;
   final label = TextEditingController();
@@ -210,7 +211,12 @@ class _DonationFormState extends State<DonationForm> {
   }
 
   Future<void> pickImage(ImageSource source) async {
-    final image = await ImagePicker().pickImage(source: source);
+    final image = await ImagePicker().pickImage(
+      source: source,
+      maxHeight: 1000,
+      maxWidth: 1000,
+      imageQuality: 50,
+    );
     setState(() {
       imagePath = image?.path;
     });
@@ -255,21 +261,28 @@ class _DonationFormState extends State<DonationForm> {
     final timeStamp = DateTime.now().millisecondsSinceEpoch;
     try {
       // save data to firestore
-      await FirebaseFirestore.instance
-          .collection("donations")
-          .doc(timeStamp.toString())
-          .set({
-        "uid": uid,
+      await firestore.collection("donations").doc(timeStamp.toString()).set({
+        "postedBy": uid,
         "photoUrl": photoUrl,
         "complete": false,
         "donate": widget.donate,
-        "timestamp": DateTime.now().millisecondsSinceEpoch,
+        "likes": 0,
+        "dislikes": 0,
+        "donationId": timeStamp.toString(),
         "image": imageUrl ?? "",
         "product": widget.product,
         "label": label.text.trim(),
         "shortDesc": shortDesc.text.trim(),
         "longDesc": longDesc.text.trim(),
         "quantity": quantity.text.trim(),
+      });
+
+      String val = widget.donate == true ? "give" : "take";
+      await firestore.collection("users").doc(uid).get().then((value) async {
+        await firestore
+            .collection("users")
+            .doc(uid)
+            .update({val: value[val] + 1});
       });
     } on FirebaseException catch (e) {
       showError(e);

@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:sharethegood/ui/donation/comments.dart';
 import 'package:sharethegood/ui/users/conversation_screen.dart';
 
 class DonationDetails extends StatefulWidget {
@@ -13,8 +15,10 @@ class DonationDetails extends StatefulWidget {
 }
 
 class _DonationDetailsState extends State<DonationDetails> {
+  final firestore = FirebaseFirestore.instance;
   final uid = FirebaseAuth.instance.currentUser?.uid;
   DocumentSnapshot? userSnapshot;
+  bool? isLiked;
 
   @override
   void initState() {
@@ -28,8 +32,21 @@ class _DonationDetailsState extends State<DonationDetails> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.snapshot['donate'] ? "Available" : "Required",
+          widget.snapshot['label'].toString().toUpperCase(),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: colorScheme.primary,
+          ),
         ),
+        actions: [
+          CircleAvatar(
+            backgroundImage: CachedNetworkImageProvider(
+              widget.snapshot['photoUrl'],
+            ),
+          ),
+          const SizedBox(width: 20),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -42,35 +59,38 @@ class _DonationDetailsState extends State<DonationDetails> {
                       borderRadius: BorderRadius.circular(8.0),
                       child: CachedNetworkImage(
                         imageUrl: widget.snapshot['image'],
-                        filterQuality: FilterQuality.low,
+                        filterQuality: FilterQuality.none,
+                        fit: BoxFit.scaleDown,
                         height: 500,
+                        width: double.infinity,
                       ),
                     )
                   : const SizedBox(),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: CachedNetworkImageProvider(
-                        widget.snapshot['photoUrl'],
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                    Text(
-                      widget.snapshot['label'].toString().toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: colorScheme.primary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              const SizedBox(height: 15),
+
+              // Padding(
+              //   padding: const EdgeInsets.all(16.0),
+              //   child: Row(
+              //     crossAxisAlignment: CrossAxisAlignment.center,
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     children: [
+              //       CircleAvatar(
+              //         backgroundImage: CachedNetworkImageProvider(
+              //           widget.snapshot['photoUrl'],
+              //         ),
+              //       ),
+              //       const SizedBox(width: 15),
+              //       Text(
+              //         widget.snapshot['label'].toString().toUpperCase(),
+              //         style: TextStyle(
+              //           fontSize: 18,
+              //           fontWeight: FontWeight.bold,
+              //           color: colorScheme.primary,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               Container(
                 padding: const EdgeInsets.all(12.0),
                 decoration: BoxDecoration(
@@ -135,7 +155,35 @@ class _DonationDetailsState extends State<DonationDetails> {
                   ],
                 ),
               ),
-              const SizedBox(height: 80),
+              const SizedBox(height: 10),
+
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (_) {
+                            return Comments(
+                              uid: userSnapshot!['uid'],
+                              donationId: widget.snapshot['donationId'],
+                            );
+                          });
+                    },
+                    icon: Icon(Icons.forum_outlined),
+                  ),
+                  SizedBox(width: 10),
+                  IconButton(
+                    onPressed: () {
+                      Share.share(
+                          "hi checkout this amazing donation app available on Google play store https://play.google.com/store/apps/details?id=com.sharethegood.sharethegood");
+                    },
+                    icon: Icon(Icons.share),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -169,10 +217,8 @@ class _DonationDetailsState extends State<DonationDetails> {
   }
 
   void getUserData() async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(widget.snapshot['uid'])
-        .get();
+    final snapshot =
+        await firestore.collection('users').doc(widget.snapshot['uid']).get();
     setState(() {
       userSnapshot = snapshot;
     });

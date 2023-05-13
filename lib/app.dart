@@ -1,7 +1,6 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:sharethegood/services/auth_service.dart';
+import 'package:sharethegood/ui/auth_service.dart';
 import 'core/theme/dark_theme.dart';
 import 'core/theme/light_theme.dart';
 
@@ -16,7 +15,6 @@ class _ApplicationState extends State<Application> {
   @override
   void initState() {
     super.initState();
-    setupInteractedMessage();
   }
 
   @override
@@ -29,26 +27,5 @@ class _ApplicationState extends State<Application> {
         home: const AuthService(),
       );
     });
-  }
-
-  // It is assumed that all messages contain a data field with the key 'type'
-  Future<void> setupInteractedMessage() async {
-    // Get any messages which caused the application to open from a terminated state.
-    final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-
-    if (initialMessage != null) {
-      _handleMessage(initialMessage);
-    }
-
-    // Also handle any interaction when the app is in the background via a Stream listener
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
-  }
-
-  void _handleMessage(RemoteMessage message) {
-    // if (message.data['type'] == 'chat') {
-    //   Navigator.pushNamed(context, '/chat',
-    //     arguments: ChatArguments(message),
-    //   );
-    // }
   }
 }

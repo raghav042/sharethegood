@@ -8,61 +8,62 @@ class TopDonors extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection("users").snapshots(),
-        builder: (_, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const Center(child: Text("An error occurred"));
-          } else if (snapshot.data != null) {
-            return SizedBox(
-              height: 150,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: snapshot.data!.docs.length < 5
-                      ? snapshot.data!.docs.length
-                      : 5,
+    return SafeArea(
+      child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection("users").where("type", isEqualTo: "Individual").snapshots(),
+          builder: (_, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return const Center(child: Text("An error occurred"));
+            } else if (snapshot.data != null) {
+              return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: snapshot.data!.docs.length,
                   itemBuilder: (_, index) {
                     return Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Column(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => ProfileScreen(
-                                          snapshot: snapshot
-                                              .data!.docs[index])));
-                            },
-                            child: CircleAvatar(
-                              radius: 60,
-                              backgroundImage:
-                              CachedNetworkImageProvider(snapshot
-                                  .data!.docs[index]['photoUrl']),
-                            ),
+                      padding: const EdgeInsets.all(4),
+                      child: ListTile(
+                        // onTap: () {
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (_) => ProfileScreen(
+                        //         snapshot: snapshot.data!.docs[index],
+                        //       ),
+                        //     ),
+                        //   );
+                        // },
+                        leading: CircleAvatar(
+                          radius: 25,
+                          backgroundImage: CachedNetworkImageProvider(
+                              snapshot.data!.docs[index]['photoUrl']),
+                        ),
+                        title: Text(
+                          snapshot.data!.docs[index]['name'],
+                          style: const TextStyle(
+                            fontSize: 16,
                           ),
-                          Text(
-                            snapshot.data!.docs[index]['name']
-                                .toString()
-                                .split(" ")
-                                .first,
-                            style: const TextStyle(fontSize: 16),
-                            overflow: TextOverflow.ellipsis,
-                          )
-                        ],
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        subtitle: Text(
+                          snapshot.data!.docs[index]['email'],
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        // trailing: Text(
+                        //   snapshot.data!.docs[index]['type'],
+                        //   style: const TextStyle(fontSize: 10),
+                        // ),
                       ),
                     );
-                  }),
-            );
-          } else {
-            return const Center(child: Text("no data found"));
-          }
-        });
+                  });
+            } else {
+              return const Center(child: Text("no data found"));
+            }
+          }),
+    );
   }
 }

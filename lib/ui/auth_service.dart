@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sharethegood/services/firebase_helper.dart';
 import 'package:sharethegood/ui/login/welcome_screen.dart';
 import 'main_screen.dart';
 
@@ -16,7 +17,10 @@ class AuthService extends StatelessWidget {
           } else if (snapshot.hasError) {
             return const WelcomeScreen();
           } else if (snapshot.data != null) {
-            return const MainScreen();
+            return FirebaseHelper.userType == "Individual"? const IndividualMainScreen():
+
+
+              const MainScreen();
           } else {
             return const WelcomeScreen();
           }

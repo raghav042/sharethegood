@@ -17,20 +17,12 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final userData = FirebaseHelper.userData;
-  final uid = FirebaseAuth.instance.currentUser?.uid;
+
   final firestore = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
-
   bool isUploading = false;
-
   double uploadProgress = 0.0;
   String? imagePath;
-  late bool isMe;
-  @override
-  void initState() {
-    isMe = userData!['uid'] == uid;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,18 +80,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: CircularProgressIndicator(),
                             )
                       : const SizedBox(),
-                  isMe
-                      ? Align(
-                          alignment: Alignment.bottomRight,
-                          child: FloatingActionButton(
-                            elevation: 0.5,
-                            onPressed: () {
-                              updateImage(context);
-                            },
-                            child: const Icon(Icons.camera),
-                          ),
-                        )
-                      : const SizedBox(),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: FloatingActionButton(
+                      elevation: 0.5,
+                      onPressed: () {
+                        updateImage(context);
+                      },
+                      child: const Icon(Icons.camera),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -118,25 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               "Account Type :  ${userData!['type']}",
               style: const TextStyle(fontSize: 16),
             ),
-            isMe
-                ? ProfileSettings(uid: userData!['uid'])
-                : Padding(
-                    padding: const EdgeInsets.all(40.0),
-                    child: SizedBox(
-                      height: 55,
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                          onPressed: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => ConversationScreen(
-                            //             snapshot: userData!)));
-                          },
-                          icon: const Icon(Icons.message),
-                          label: const Text("Send Message")),
-                    ),
-                  ),
+            ProfileSettings(uid: userData!['uid']),
             imagePath != null
                 ? Container(
                     height: 60,
@@ -266,7 +238,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> uploadPic() async {
     final image = File(imagePath!);
     final imageName = imagePath?.split("/").last;
-    final fileRef = storage.ref("users").child(uid!).child(imageName!);
+    final fileRef =
+        storage.ref("users").child(userData!['uid']).child(imageName!);
 
     final metaData = SettableMetadata(contentType: "image/jpeg");
 
@@ -297,7 +270,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // save photoUrl to firestore
               await firestore
                   .collection("users")
-                  .doc(uid)
+                  .doc(userData!['uid'])
                   .update({"photoUrl": photoUrl});
               setState(() {
                 isUploading = false;

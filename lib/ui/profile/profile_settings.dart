@@ -20,7 +20,7 @@ class ProfileSettings extends StatelessWidget {
             leading: const Icon(Icons.volunteer_activism_outlined),
             title: const Text("Donation History"),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_)=> DonationHistory(uid: uid)));
+              Navigator.push(context, MaterialPageRoute(builder: (_)=> DonationHistory()));
             },
             textColor: colorScheme.onPrimaryContainer,
             iconColor: colorScheme.onPrimaryContainer,

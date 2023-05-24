@@ -73,14 +73,14 @@ class DonationDashboard extends StatelessWidget {
                     label: "clothes",
                     progress: clothesAvailable / totalAvailableItems,
                   ),
-                  DashboardTile(
-                    available: true,
-                    width: double.infinity,
-                    gradient: ColorConstants.amberGradient,
-                    quantity: othersAvailable.toString(),
-                    label: "other items",
-                    progress: othersAvailable / totalAvailableItems,
-                  ),
+                  // DashboardTile(
+                  //   available: true,
+                  //   width: double.infinity,
+                  //   gradient: ColorConstants.amberGradient,
+                  //   quantity: othersAvailable.toString(),
+                  //   label: "other items",
+                  //   progress: othersAvailable / totalAvailableItems,
+                  // ),
 
                   // Required
                   DashboardTile(
@@ -99,14 +99,14 @@ class DonationDashboard extends StatelessWidget {
                     label: "clothes",
                     progress: clothesRequired / totalRequiredItems,
                   ),
-                  DashboardTile(
-                    available: false,
-                    width: double.infinity,
-                    gradient: ColorConstants.purpleGradient,
-                    quantity: othersRequired.toString(),
-                    label: "other items",
-                    progress: othersRequired / totalRequiredItems,
-                  )
+                  // DashboardTile(
+                  //   available: false,
+                  //   width: double.infinity,
+                  //   gradient: ColorConstants.purpleGradient,
+                  //   quantity: othersRequired.toString(),
+                  //   label: "other items",
+                  //   progress: othersRequired / totalRequiredItems,
+                  // )
                 ],
               );
             } else {

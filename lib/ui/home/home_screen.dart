@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sharethegood/services/firebase_helper.dart';
 import 'package:sharethegood/ui/dashboard/small_dashboard.dart';
 import 'package:sharethegood/ui/home/donation_button.dart';
+import 'package:sharethegood/ui/home/notification_screen.dart';
+import 'package:sharethegood/ui/home/top_donors.dart';
 import 'package:sharethegood/ui/home/top_media.dart';
 import 'package:sharethegood/ui/profile/profile_screen.dart';
 
@@ -16,36 +18,47 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-     // drawer: AppDrawer(),
+      // drawer: AppDrawer(),
       appBar: AppBar(
         title: Text("Hi ${FirebaseHelper.userData!['name']}"),
-        actions: [Hero(
-          tag: "profile_pic",
-          child: IconButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => ProfileScreen()));
-            },
-            icon: CircleAvatar(
-              backgroundImage:
-              CachedNetworkImageProvider(FirebaseHelper.userData!['photoUrl']),
+        actions: [
+          Hero(
+            tag: "profile_pic",
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) =>  ProfileScreen()));
+              },
+              icon: CircleAvatar(
+                backgroundImage: CachedNetworkImageProvider(
+                    FirebaseHelper.userData!['photoUrl']),
+              ),
             ),
           ),
-        ),],
+          IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_)=> NotificationScreen()));
+            },
+            style: IconButton.styleFrom(
+              backgroundColor: colorScheme.surfaceVariant,
+              foregroundColor: colorScheme.onSurfaceVariant,
+            ),
+            icon: const Icon(Icons.notifications),
+          ),
+        ],
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
           children: [
             DonationButton(),
             SmallDashboard(),
             TopMedia(),
+            TopDonors(),
           ],
         ),
       ),
-
-
-
 
       // floatingActionButton: FloatingActionButton.extended(
       //   onPressed: () {
@@ -58,7 +71,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
 
 /*
 SingleChildScrollView(

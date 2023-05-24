@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sharethegood/ui/home/chat_screen.dart';
 import 'package:sharethegood/ui/home/top_donors.dart';
 import 'home/home_screen.dart';
 import 'home/donation_available_screen.dart';
@@ -18,7 +19,7 @@ class _IndividualMainScreenState extends State<IndividualMainScreen> {
     HomeScreen(),
     DonationAvailableScreen(),
     RequirementAvailableScreen(),
-    TopDonors(),
+    ChatScreen(),
   ];
   int currentScreen = 0;
   @override
@@ -52,9 +53,9 @@ class _IndividualMainScreenState extends State<IndividualMainScreen> {
           ),
 
           NavigationDestination(
-            icon: Icon(Icons.diversity_1_outlined),
-            selectedIcon: Icon(Icons.diversity_1),
-            label: "Top Donors",
+            icon: Icon(Icons.message_outlined),
+            selectedIcon: Icon(Icons.message),
+            label: "Chat",
           ),
         ],
       ),
@@ -78,7 +79,7 @@ class _MainScreenState extends State<MainScreen> {
     HomeScreen(),
     DonationAvailableScreen(),
     //RequirementAvailableScreen(),
-    TopDonors(),
+    ChatScreen(),
   ];
   int currentScreen = 0;
   @override
@@ -112,9 +113,9 @@ class _MainScreenState extends State<MainScreen> {
           // ),
 
           NavigationDestination(
-            icon: Icon(Icons.diversity_1_outlined),
-            selectedIcon: Icon(Icons.diversity_1),
-            label: "Top Donors",
+            icon: Icon(Icons.message_outlined),
+            selectedIcon: Icon(Icons.message),
+            label: "Chat",
           ),
         ],
       ),

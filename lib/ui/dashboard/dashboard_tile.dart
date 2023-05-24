@@ -48,7 +48,7 @@ class DashboardTile extends StatelessWidget {
             children: [
               Text(
                 quantity,
-                style: GoogleFonts.kalam(
+                style: TextStyle(
                   fontSize: 60,
                   color: colorScheme.primary,
                 ),

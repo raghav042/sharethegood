@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:sharethegood/services/firebase_helper.dart';
+import 'package:sharethegood/services/preferences.dart';
 import 'package:sharethegood/ui/home/chat_screen.dart';
 import 'package:sharethegood/ui/home/top_donors.dart';
 import 'home/home_screen.dart';
@@ -22,6 +26,13 @@ class _IndividualMainScreenState extends State<IndividualMainScreen> {
     ChatScreen(),
   ];
   int currentScreen = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    checkFcmToken();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,13 +56,11 @@ class _IndividualMainScreenState extends State<IndividualMainScreen> {
             selectedIcon: Icon(Icons.volunteer_activism),
             label: "Available",
           ),
-
           NavigationDestination(
             icon: Icon(Icons.diversity_3_outlined),
             selectedIcon: Icon(Icons.diversity_3),
             label: "Required",
           ),
-
           NavigationDestination(
             icon: Icon(Icons.message_outlined),
             selectedIcon: Icon(Icons.message),
@@ -62,8 +71,6 @@ class _IndividualMainScreenState extends State<IndividualMainScreen> {
     );
   }
 }
-
-
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -82,6 +89,12 @@ class _MainScreenState extends State<MainScreen> {
     ChatScreen(),
   ];
   int currentScreen = 0;
+  @override
+  void initState() {
+    super.initState();
+    checkFcmToken();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,5 +133,16 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
     );
+  }
+}
+
+Future<void> checkFcmToken() async {
+  final uid = FirebaseAuth.instance.currentUser?.uid;
+  final newToken = await FirebaseMessaging.instance.getToken();
+  debugPrint("fcm token is: $newToken\n");
+  if (newToken != null && newToken != Preferences.getFcmToken()) {
+    await Preferences.saveFcmToken(newToken);
+    await FirebaseHelper.usersCol.doc(uid).update({"fcmToken": newToken});
+    debugPrint("token updated successfully\n");
   }
 }

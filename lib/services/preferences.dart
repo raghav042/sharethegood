@@ -6,6 +6,7 @@ class Preferences {
 
   static late SharedPreferences preferences;
   static const keyUserData = "userData";
+  static const keyFcmToken = "fcmToken";
 
   static Future<void> initPreferences() async {
     preferences = await SharedPreferences.getInstance();
@@ -18,5 +19,14 @@ class Preferences {
   static Map<String, dynamic>? getUserData() {
     final String? value = preferences.getString(keyUserData);
     return value != null ? json.decode(value) : null;
+  }
+
+
+  static Future<bool> saveFcmToken(String? fcmToken) async {
+    return await preferences.setString(keyFcmToken, fcmToken!);
+  }
+
+  static String? getFcmToken() {
+    return preferences.getString(keyFcmToken);
   }
 }

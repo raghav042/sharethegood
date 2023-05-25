@@ -16,27 +16,18 @@ class FcmHelper {
   static String? fcmToken = Preferences.getFcmToken();
   static final FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  // TARGET MULTIPLE PLATFORMS
-  static Map<String, dynamic> request = {
+
+
+  // TARGET SPECIFIC DEVICE
+  final Map<String, dynamic> specificRequest = {
     "message": {
-      "topic": "news",
+      "token": "token",
       "notification": {
-        "title": "Breaking News",
-        "body": "New news story available."
-      },
-      "data": {"story_id": "story_12345"},
-      "android": {
-        "notification": {"click_action": "TOP_STORY_ACTIVITY"}
-      },
-      "apns": {
-        "payload": {
-          "aps": {"category": "NEW_MESSAGE_CATEGORY"}
-        }
+        "body": "content",
+        "title": "title"
       }
     }
   };
-
-
 
 
 
@@ -54,33 +45,46 @@ class FcmHelper {
     debugPrint('User granted permission: ${settings.authorizationStatus}');
   }
 
-  static Future<void> sendPushMessage(String? token, Map<String, dynamic> data) async {
+  static Future<void> sendPushMessage({
+    String? title,
+    String? content}) async {
     final Map<String, String> header = {
       'Content-Type': 'application/json',
       "Authorization": "Bearer ${AppConstant.cloudMessagingApiKey}",
     };
 
-    if (token == null) {
-      debugPrint('Unable to send FCM message, no token exists.');
-      return;
-    }
+    // TARGET MULTIPLE PLATFORMS
+     Map<String, dynamic> request = {
+      "message": {
+        "topic": "all",
+        "notification": {
+          "title": title ?? "title",
+          "body": content ?? "content"
+        },
+        "data": {"story_id": "story_12345"},
+        "android": {
+          "notification": {"click_action": "TOP_STORY_ACTIVITY"}
+        },
+        "apns": {
+          "payload": {
+            "aps": {"category": "NEW_MESSAGE_CATEGORY"}
+          }
+        }
+      }
+    };
 
-    // // TARGET SPECIFIC DEVICE
-    // final Map<String, dynamic> specificRequest = {
-    //   "message": {
-    //     "token": token,
-    //     "notification": {
-    //       "body": "this is an FCM notification message!",
-    //       "title": "FCM Message"
-    //     }
-    //   }
-    // };
+    // if (token == null) {
+    //   debugPrint('Unable to send FCM message, no token exists.');
+    //   return;
+    // }
+
+
 
     try {
       await http.post(
         Uri.parse(AppConstant.cloudMessagingServerEndpointUrl),
         headers: header,
-        body: json.encode(data),
+        body: json.encode(request),
       );
       debugPrint('FCM request for device sent!');
     } catch (e) {

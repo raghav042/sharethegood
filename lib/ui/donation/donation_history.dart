@@ -28,16 +28,15 @@ class DonationHistory extends StatelessWidget {
                 children: [
 
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
                     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CircleAvatar(backgroundColor: Colors.teal.shade100), const Text("Give item completed"),
-
                       ],
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
                     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CircleAvatar(backgroundColor: Colors.pink.shade100), const Text("Take item completed"),
@@ -45,7 +44,7 @@ class DonationHistory extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
                     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
 

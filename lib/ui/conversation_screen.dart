@@ -102,7 +102,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -153,11 +154,43 @@ class _ConversationScreenState extends State<ConversationScreen> {
     }
   }
 
-  void sendMessage() {
+  String getChatTitle() {
+    String name1 = FirebaseHelper.userData!['name'];
+    String name2 = snapshot?['name'];
+    if (name1.hashCode <= name2.hashCode) {
+      return '$name1$name2';
+    } else {
+      return '$name2$name1';
+    }
+  }
+
+  Future<void> sendMessage() async {
     final timeStamp = DateTime.now().millisecondsSinceEpoch;
 
     if (messageController.text.isNotEmpty) {
-      firestore
+      final snap = await firestore.collection("chats").doc(chatId).get();
+      if (!snap.exists) {
+        await firestore.collection("chats").doc(chatId).set({
+          "chatId": chatId,
+          "participants": [
+            FirebaseHelper.userData!['uid'],
+            snapshot?['uid'],
+          ],
+          "participants_name": [
+            FirebaseHelper.userData!['name'],
+            snapshot?['name'],
+          ],
+          "chatTitle": getChatTitle(),
+        });
+      }
+
+      await firestore.collection("chats").doc(chatId).update({
+        "last_message": messageController.text.trim(),
+        "sendBy": uid,
+        "time": timeStamp,
+      });
+
+      await firestore
           .collection("chats")
           .doc(chatId)
           .collection("messages")

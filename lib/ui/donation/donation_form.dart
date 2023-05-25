@@ -4,16 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sharethegood/core/notification/fcm_helper.dart';
 import 'package:sharethegood/services/firebase_helper.dart';
 import 'package:sharethegood/ui/main_screen.dart';
 import 'input_text.dart';
 import 'package:sharethegood/core/labels.dart';
 
 class DonationForm extends StatefulWidget {
-  const DonationForm({Key? key, required this.donate})
-      : super(key: key);
+  const DonationForm({Key? key, required this.donate}) : super(key: key);
   final bool donate;
-
 
   @override
   State<DonationForm> createState() => _DonationFormState();
@@ -30,7 +29,6 @@ class _DonationFormState extends State<DonationForm> {
   String? imagePath;
   bool isUploading = false;
   String product = "books";
-
 
   @override
   void initState() {
@@ -53,26 +51,19 @@ class _DonationFormState extends State<DonationForm> {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: SizedBox(
                 height: 300,
-                child: Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: [
-                    imagePath == null
-                        ? Image.asset(
-                            "assets/upload_media.jpg",
-                            height: 300,
-                          )
-                        : Image.file(File(imagePath!)),
-                  ],
-                ),
+                child: imagePath == null
+                    ? Image.asset(
+                        "assets/upload_media.jpg",
+                        height: 300,
+                      )
+                    : Image.file(File(imagePath!)),
               ),
             ),
-
             InputText(label: 'Title', controller: label),
             buildProductType(colorScheme),
             InputText(label: "Short Description", controller: shortDesc),
             InputText(label: "Long Description", controller: longDesc),
             InputText(label: "Quantity", controller: quantity),
-
             Padding(
               padding: const EdgeInsets.all(25),
               child: SizedBox(
@@ -117,15 +108,13 @@ class _DonationFormState extends State<DonationForm> {
           ],
         ),
       ),
-      floatingActionButton:
-          FloatingActionButton.extended(
-              onPressed: () {
-                showImagePicker(context);
-              },
-              icon: const Icon(Icons.image),
-              label: Text(imagePath == null ? "Add image" : "Change Image"),
-            )
-          ,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          showImagePicker(context);
+        },
+        icon: const Icon(Icons.image),
+        label: Text(imagePath == null ? "Add image" : "Change Image"),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     );
   }
@@ -159,15 +148,15 @@ class _DonationFormState extends State<DonationForm> {
             underline: const SizedBox(),
             items: donationLabels
                 .map((e) => DropdownMenuItem<String>(
-              value: e,
-              child: Row(
-                children: [
-                  const Icon(Icons.category),
-                  const SizedBox(width: 15),
-                  Text(e),
-                ],
-              ),
-            ))
+                      value: e,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.category),
+                          const SizedBox(width: 15),
+                          Text(e),
+                        ],
+                      ),
+                    ))
                 .toList(),
             onChanged: (value) {
               setState(() {
@@ -177,8 +166,6 @@ class _DonationFormState extends State<DonationForm> {
       ),
     );
   }
-
-
 
   void showImagePicker(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -326,6 +313,16 @@ class _DonationFormState extends State<DonationForm> {
             .doc(uid)
             .update({val: value[val] + 1});
       });
+      //show error in snackbar message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Your product added successfully")),
+      );
+      await FcmHelper.sendPushMessage(
+        title: widget.donate == true
+            ? "${label.text.trim()} available"
+            : "${label.text.trim()} required",
+        content: shortDesc.text.trim(),
+      );
     } on FirebaseException catch (e) {
       showError(e);
     }
@@ -342,8 +339,7 @@ class _DonationFormState extends State<DonationForm> {
   }
 
   Future<void> getUserImage() async {
-    final userData =
-        await FirebaseFirestore.instance.collection("users").doc(uid).get();
+    final userData = await FirebaseFirestore.instance.collection("users").doc(uid).get();
     photoUrl = userData['photoUrl'];
   }
 }

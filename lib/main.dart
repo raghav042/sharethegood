@@ -23,6 +23,7 @@ Future<void> main() async {
   await NotificationHelper.initNotificationStream();
   await FcmHelper.requestFcmPermission();
 
+  await FirebaseMessaging.instance.subscribeToTopic("all");
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   FirebaseMessaging.onMessageOpenedApp.listen((event) => handleMessage(event));
   FirebaseMessaging.onMessage.listen((event) => handleMessage(event));

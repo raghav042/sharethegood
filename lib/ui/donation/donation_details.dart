@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:sharethegood/services/firebase_helper.dart';
+import 'package:sharethegood/ui/conversation_screen.dart';
 import 'package:sharethegood/ui/donation/comments.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -35,7 +37,12 @@ class _DonationDetailsState extends State<DonationDetails> {
           ),
         ),
         actions: [
-
+          IconButton(
+            onPressed: () {
+              addReceiver();
+              },
+            icon: const Icon(Icons.volunteer_activism),
+          ),
           IconButton(
             onPressed: () {
               Share.share(
@@ -172,4 +179,14 @@ class _DonationDetailsState extends State<DonationDetails> {
     );
   }
 
+  Future<void> addReceiver() async {
+
+    await FirebaseHelper.donationCol
+        .doc(widget.snapshot['donationId'])
+        .update({"receiverId": FirebaseHelper.userData!['uid']});
+
+    Navigator.push(context,
+        MaterialPageRoute(builder: (_) => ConversationScreen(uid: widget.snapshot['postedBy'])));
+
+  }
 }

@@ -70,11 +70,9 @@ class _CommentsState extends State<Comments> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (_, index) {
                       return ListTile(
-                        onLongPress: FirebaseHelper.userData!['type'] ==
-                                "Individual"
+                        onLongPress: FirebaseHelper.userData!['type'] == "Individual" && snapshot.data!.docs[index]['commentBy'] != FirebaseHelper.userData!['uid']
                             ? () {
-                                addReceiver(
-                                    snapshot.data!.docs[index]['commentBy']);
+                                addReceiver(snapshot.data!.docs[index]['commentBy']);
                               }
                             : null,
                         title: Text(snapshot.data!.docs[index]['name']),
@@ -99,6 +97,13 @@ class _CommentsState extends State<Comments> {
     await FirebaseHelper.donationCol
         .doc(widget.donationId)
         .update({"receiverId": id});
+    await FirebaseFirestore.instance.collection("notifications").doc(timeStamp.toString()).set({
+      "sender": FirebaseHelper.userData!['name'],
+      "senderId": FirebaseHelper.userData!['uid'],
+      "receiver": id,
+      "message": "Hi, close the entry if you received this item 😊",
+
+    });
     Navigator.push(context,
         MaterialPageRoute(builder: (_) => ConversationScreen(uid: id)));
   }
